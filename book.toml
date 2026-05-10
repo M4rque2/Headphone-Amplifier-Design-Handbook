@@ -2,3 +2,9 @@
 title = "Headphone Amplifier Design Handbook"
 authors = ["zhang chi"]
 language = "en"
+
+[preprocessor.bib]
+bibliography = "references.bib"
+
+[output.html]
+mathjax-support = true

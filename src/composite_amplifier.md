@@ -13,7 +13,7 @@ To explain this non-technically, imagine the relationship between a driver (the 
 ## Topping A90
 The first amp introduced is Topping A90 Headphone amplifier, it use an OPA1612 to driver 2×TPA6120A2 in one package for each channel. The topology is shown below:
 
-![Topping A90 Schematic](images/topping_A90.svg)
+![Topping A90 Schematic](images/Topping_A90.svg)
 
 Since topping A90 set the gain of the second amp to be 1, so it is simpler to treat the second amp a low distortion output stage as it only use its gain to correct it own output error. OPA1612 claims 40Mhz GBW, TPA6120 didn't claims its GBW on its datasheet, but we know it is basicly THS6012, which has 315Mhz GBW. So the second amp will bring 45° phase lag at about 300Mhz in theory. The gain of the first amp is far below zero at that frequency, because its GBW is only 40Mhz. Theoreticlly it is stable inherently.
 

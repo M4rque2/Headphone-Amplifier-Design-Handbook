@@ -36,7 +36,7 @@ jobs:
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-mdbook-bib
       - name: Install mdbook-bib
-        run: cargo install mdbook-bib
+        run: test -x ~/.cargo/bin/mdbook-bib || cargo install mdbook-bib
       - name: Build
         run: mdbook build
       - name: Upload artifact

@@ -28,7 +28,7 @@ By placing the voltage gain of the second amplifier inside the global feedback l
 
  Omicron headphone amplifier by Alexcp from diyaudio build in this way, here is the schematic diagram:
 
-![Omicron Headphone Amplifier](images/2022-06-08-02.png)
+![Omicron Headphone Amplifier](images/omicron_simplified.png)
 
 C2/C3 and R3/R4 form a two-pole compensate feedback network that helps recover phase margin.
 

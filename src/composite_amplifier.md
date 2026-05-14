@@ -23,10 +23,19 @@ In real world, parasite capacitance of headphone and its wire may worse the amp 
 
 The successor model, A90 Discrete, keeps the same core topology: a classic op-amp driving a current-feedback op-amp, but implemented with discrete components. I may add its schematic in a later version of this book.
 
-## Omicron Headphone Amplifier
-By placing the voltage gain of the second amplifier inside the global feedback loop, the composite amplifier leverages the combined open-loop gain (A1 x A2) for deep global feedback, rather than limiting the second amplifier to unity gain and treating it only as an output stage.
+## Turbocharged Audio Amplifier
+In the Topping A90, the second amplifier is set at unity gain, so its local negative feedback mainly corrects its own distortion. If you want the second stage's gain to participate in global feedback, a classic example is the LM1875-based "Turbocharged Audio Amplifier" proposed by Kitchin et al. {{#cite kitchin1992turbocharged}}. It was designed as a power amplifier, but it can also work with headphones because the composite design effectively improves the LM1875's noise floor.
 
-The Omicron headphone amplifier by Alexcp from diyaudio is built this way:
+![Turbocharged Audio Amplifier](images/Turbocharged_LM1875.svg)
+
+More open-loop gain allows deeper negative feedback，it reduces the distortion of the amplifier from 0.02% (LM1875 alone) to 0.005% (AD711 + LM1875 composite).
+
+R1, R2, and C1 form a phase-leading network, which creates a zero at $ f_z = \frac{1}{2 \pi R_1 C_1} $ and a higher-frequency pole at $ f_p = \frac{1}{2 \pi (R_1 \parallel R_2) C_1} $. It produce enough phase margin at 0dB crossover.
+
+![Turbochrged Amplifier Bode Analyse](images/Turbocharged_Bode.svg)
+
+## Omicron Headphone Amplifier
+In the "Turbocharged Audio Amplifier", about 30 dB of gain is sacrificed in the phase-leading network as the price of phase compensation. If you want more gain available for global feedback, the Omicron amplifier by Alexcp from diyaudio is built this way.
 
 ![Omicron Headphone Amplifier](images/Omicron_Headphone_Amplifier.svg)
 
@@ -34,23 +43,15 @@ It is a sophisticated amplifier consisting of two gain stages and a Class A outp
 
 ![Omicron Amplifier Bode Analyse](images/Omicron_Bode.svg)
 
-From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase shifts rapidly as well. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from potential oscillation. Alexcp noted that as long as there is sufficient phase margin at the 0 dB gain crossover, the amplifier is stable. To be honest, I do not fully understand this yet.
+From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase changes sharply around this frequency and drops below -180 degrees at higher frequencies, indicating a strong tendency toward oscillation. The phase recover at about 1 MHz, finally some phase margin is preserved at the 0 dB gain crossover. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from potential oscillation.
+
+To be honest, I do not fully understand why this works; however, many members of the diyaudio community have built this amplifier, so there is no doubt that it works in practice.
 
 If the complete schematic gives you a headache, here is a simplified version:
 
 ![Omicron Headphone Amplifier](images/Omicron_Simplified.svg)
 
-C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; that is the core idea of this design.
-
-## Turbocharged Audio Amplifier
-Another example is an LM1875-based "Turbocharged audio amplifier" proposed by Kitchin et al. {{#cite kitchin1992turbocharged}}. It was designed for speakers, but it can also work with headphones. The composite design effectively improve the LM1875's noise floor.
-
-![Turbocharged Audio Amplifier](images/Turbocharged_LM1875.svg)
-
-R1, R2, and C1 form a phase-leading network, which creates a zero at $$ f_z = \frac{1}{2 \pi R_1 C_1} $$ and a higher-frequency pole at $$ f_p = \frac{1}{2 \pi (R_1 \parallel R_2) C_1} $$.
-
-
-
+C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; these are the main components of the frequency compensation network.
 
 
 

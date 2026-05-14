@@ -26,11 +26,21 @@ The successor model, A90 Discrete, keeps the same core topology: a classic op-am
 ## Omicron Headphone Amplifier
 By placing the voltage gain of the second amplifier inside the global feedback loop, the composite amplifier leverages the combined open-loop gain (A1 x A2) for deep global feedback, rather than limiting the second amplifier to unity gain and treating it only as an output stage.
 
- Omicron headphone amplifier by Alexcp from diyaudio build in this way, here is the schematic diagram:
+The Omicron headphone amplifier by Alexcp from diyaudio is built this way:
 
-![Omicron Headphone Amplifier](images/omicron_simplified.png)
+![Omicron Headphone Amplifier](images/Omicron_Headphone_Amplifier.svg)
 
-C2/C3 and R3/R4 form a two-pole compensate feedback network that helps recover phase margin.
+It is a sophisticated amplifier consisting of two gain stages and a Class A output stage.
+
+![Omicron Amplifier Bode Analyse](images/Omicron_Bode.svg)
+
+From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase shifts rapidly as well. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from potential oscillation. Alexcp noted that as long as there is sufficient phase margin at the 0 dB gain crossover, the amplifier is stable. To be honest, I do not fully understand this yet.
+
+If the complete schematic gives you a headache, here is a simplified version:
+
+![Omicron Headphone Amplifier](images/Omicron_Simplified.svg)
+
+C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; that is the core idea of this design.
 
 ## Turbocharged Audio Amplifier
 Another example is an LM1875-based "Turbocharged audio amplifier" proposed by Kitchin et al. {{#cite kitchin1992turbocharged}}. It was designed for speakers, but it can also work with headphones. The composite design effectively improve the LM1875's noise floor.

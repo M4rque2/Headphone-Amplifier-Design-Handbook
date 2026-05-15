@@ -30,7 +30,9 @@ In the Topping A90, the second amplifier is set at unity gain, so its local nega
 
 More open-loop gain allows deeper negative feedback，it reduces the distortion of the amplifier from 0.02% (LM1875 alone) to 0.005% (AD711 + LM1875 composite).
 
-R1, R2, and C1 form a phase-leading network, which creates a zero at \\(f_z = \frac{1}{2\pi R_1 C_1}\\) and a higher-frequency pole at \\(f_p = \frac{1}{2\pi (R_1 \parallel R_2) C_1}\\). It produces enough phase margin at the 0 dB crossover.
+![Trubocharged Phase Leading Network](images/Turbocharged_Phase_Leading_Network.svg)
+
+A phase-lead network consisting of R1, R2, and C1 helps improve phase margin; otherwise, the amplifier will oscillate. As the transfer function shows, it creates a zero at \\(f_z = \frac{1}{2\pi R_1 C_1}\\), about 400 kHz, and a higher-frequency pole at \\(f_p = \frac{1}{2\pi (R_1 \parallel R_2) C_1}\\), about 20 MHz. This provides enough phase margin at the 0 dB gain crossover.
 
 ![Turbochrged Amplifier Bode Analyse](images/Turbocharged_Bode.svg)
 

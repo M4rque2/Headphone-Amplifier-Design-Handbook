@@ -10,17 +10,18 @@ phi2 = np.pi / 2
 
 # Use one period of the fundamental
 t = np.linspace(0, 2 * np.pi, 2000)
-fundamental = A1 * np.sin(t)
+# Inverting amplifier output: fundamental starts going negative (down) first
+fundamental = -A1 * np.sin(t)
 second_harmonic = A2 * np.sin(2 * t + phi2)
 composite = fundamental + second_harmonic
 
 fig, ax = plt.subplots(figsize=(10, 5), dpi=160)
-ax.plot(t, fundamental, label='Fundamental: sin(wt)', linewidth=2)
+ax.plot(t, fundamental, label='Fundamental: -sin(wt)', linewidth=2)
 ax.plot(t, second_harmonic, label=f'2nd harmonic: {A2:.2f}*sin(2wt + 90 deg)', linewidth=2)
-ax.plot(t, composite, label='Composite', linewidth=2.5, color='black')
+ax.plot(t, composite, label='Composite (inverting output)', linewidth=2.5, color='black')
 
 ax.axhline(0, color='gray', linewidth=0.8)
-ax.set_title('Fundamental + 2nd Harmonic (90 deg phase shift)')
+ax.set_title('Inverting Output: Fundamental + 2nd Harmonic (90 deg phase shift)')
 ax.set_xlabel('wt (rad)')
 ax.set_ylabel('Amplitude')
 ax.set_xlim(0, 2 * np.pi)

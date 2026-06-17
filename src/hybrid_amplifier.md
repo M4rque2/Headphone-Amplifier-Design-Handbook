@@ -3,112 +3,50 @@
 Hybrid amplifiers can be classified by device arrangement across stages, such as tube-gain/solid-state-power and solid-state-gain/tube-power designs. In practice, they usually sound either tube-like or solid-state-like, rather than a blend of both.
 
 ## Rudistor RP7
-The Rudistor RP7 is a boutique hybrid headphone amplifier by Italian designer Rudi Stor. Community discussions often describe the RP7 as an impressive and highly engaging amplifier, with a warm-leaning presentation and strong pairing with classic high-impedance headphones such as the HD600, HD650, K501, and K601. At the same time, some users have complained about build quality, quality consistency, undocumented component changes between units, and high pricing.
-
-Sadly, after the COVID-19 pandemic around 2020, Mr. Rudi lost contact with the Hi-Fi community.
+The Rudistor RP7 is a boutique hybrid headphone amplifier by Italian designer Rudi Stor. Community discussions often describe the RP7 having a warm-leaning presentation and strong pairing with classic high-impedance headphones such as the HD600, HD650, K501, and K601. Some users have complained about build quality and high pricing. Sadly, after the COVID-19 pandemic around 2020, Mr. Rudi lost contact with the Hi-Fi community.
 
 ![Rudistor RP7](images/Rudistor_RP7.svg)
 
-The schematic, like the SinglePower amplifiers introduced in the previous chapter, is a textbook-simple circuit. Its measured performance is acceptable, at around 0.01% distortion as the manufacturer claims, yet it sounds absolutely lovely. It is one of my personal favourites. 
+The schematic, like the SinglePower amplifiers introduced in the previous chapter, is a textbook-simple circuit, single-end gain-stage and single-end output-stage, but there are also tricks in it. You may notice that R7 is an adjsustable resistor, what is it adjusted for?
 
-Using tubes at an extraordinarily low voltage (42V) is a bold choice, and tube choice is critical. Few tubes work well in such conditions; the 12AU7 is one of them. The resistor drops about half of the voltage, so the tube actually works at about 15V-25V. Even so, it delivers enough current, and distortion and noise are low enough for headphone use.
+First, it uses load-line distortion cancellation as I mentioned before, Nelson Pass wrote a brilliant article about it {{#cite pass2009thesweetspot}}, in short, the bending of the transfer and plate characteristics tends to cancel out.
 
-### Why simple sounds better
-You have probably heard Nelson Pass say, "Simple sounds better." {{#cite norton1991simplesoundsbetter}}. In this section, I use the Rudistor RP7 as an example to explain why this is true both theoretically and experimentally.
+![transfer characteristics](images/12AU7_transfer_plate_character.png)
 
-### The Triode Law
-A triode is fundamentally a space-charge device. Electrons emitted by the hot cathode form a charge cloud between cathode and plate. The control grid modulates how easily electrons flow through this cloud to the anode. The space-charge-limited current follows the Child-Langmuir law, which a triode modifies by allowing the grid to change the effective accelerating voltage.
+Then, it implemented a Gain-stage Output-stage distortion cancellation technique. Note the in transfer characteristic above, the line is not straight, which means the transconductance(gm) of the tube is not constant, it becomes higher when input signal is positive, and lower when input negative. The nonlinearity makes one half of the waveform sharper and the other half blunter — one side peaks higher and narrower, the other peaks lower and wider:
 
-Drop the output stage and feedback loop, now we have simple common cathod amplifier stage.
+![uneven output](images/asymmetric_output.svg)
+
+The BJT in the output stage has a similarly nonlinear transfer curve. Although the physics differs — exponential rather than 3/2-power — the BJT also produces an asymmetric output waveform, but with the asymmetry reversed: one half-cycle is stretched where the tube compressed it, and compressed where the tube stretched it. If carefully tuned at a certain load, the distorted waveforms can cancel each other.
+
+![bjt gm curve](images/BJT_Ic_Vbe.svg)
+
+In the frequency domain, the asymmetry is easier to see and calculate: it is equivalent to a fundamental sine wave plus a second harmonic.
+
+![second_harmonic_90deg.svg](images/second_harmonic_90deg.svg)
+
+Here is Fourier analysis for the tube single-end gain stage, and BJT single-end output stage with 32-ohm loads.
+
+| stage | gain-stage | output-stage |
+|----------|----------|----------|
+| THD  | 0.10%  | 0.08%  |
+| 2nd-harmonic  | 0.01%  | 0.08%  |
+| 2nd-phase  | 90  | -90  |
+| 3rd-harmonic  | 0.001%  | 0.01%  |
+| 3rd-phase  | 0  | 0  |
+
+Second-harmonic distortion dominates both stages. Because the gain and output stages have opposite second-harmonic phase, they can cancel each other when tuned to the same magnitude at a specific load. In this design, cancellation is optimized near 32 ohms, a relatively heavy load given the 120-ohm emitter resistor. At higher headphone impedances (for example, 120 or 300 ohms), the output stage introduces less distortion, so cancellation becomes weaker.
+
+Benefiting from this two distortion cancellation techniques, its measured performance is decent, at around 0.01% distortion as the manufacturer claims, yet it sounds absolutely lovely. It is one of my personal favourites. 
+
+Nelson Pass famously said, "Simple Sounds Better" {{#cite norton1991simplesoundsbetter}}. The Rudistor RP7 is one of the clearest examples of why this idea works in practice: a simple topology with few stages, carefully tuned device behavior, and a benign distortion spectrum can produce both convincing measurements and highly natural sound.
+
+### Why "simple sounds better"
+
+In Pass’s interview with Stereophile {{#cite norton1991simplesoundsbetter}}, Pass claims simple circuits sound better because the signal passes through fewer devices, feedback loops, and correction mechanisms, so the amplifier adds fewer complex artifacts. He argues that simple topologies are easier to make stable and usually show better agreement between bench measurements and what we actually hear. He also prefers distortion spectra dominated by low-order, especially even-order harmonics, which tend to sound less objectionable than higher-order odd components often produced by more complex designs. So “simple sounds better” means not “primitive,” but “topologically clean, stable, and harmonically benign.” I will use the RP7 to show how and why that happens, from both theoretical and experimental perspectives. 
 
 ![Rudistor RP7 Gain Stage](images/Rudistor_RP7_Gain_Stage.svg)
 
-For practical triode analysis, the most useful model is:
-
-\\[
-I_a = K\left(U_{gk}+\frac{U_{ak}}{\mu}\right)^{3/2}
-\\]
-
-where:
-- \\(I_a\\) is the anode current
-- \\(U_{gk}\\) is the grid-to-cathode voltage
-- \\(U_{ak}\\) is the anode-to-cathode voltage
-- \\(K\\) is a tube-dependent constant
-- \\(\mu\\) is the amplification factor
-
-This \\(3/2\\)-power law is the **essential nonlinearity** of the triode. It is not a straight line, which means distortion is inevitable if you push a signal through it.
-
-### Why Second Harmonic Dominates
-
-To find the distortion spectrum, we expand the anode current in a Taylor series around the bias point:
-
-\\[
-i_a = a_1 u_g + a_2 u_g^2 + a_3 u_g^3 + a_4 u_g^4 + \cdots
-\\]
-
-where \\(u_g\\) is the small-signal grid voltage. Taking derivatives of the \\(3/2\\)-power law:
-
-<div>
-\[
-a_1 = \left.\frac{\partial I_a}{\partial U_{gk}}\right|_{Q} = \frac{3}{2}K U_{\mathrm{eff},0}^{1/2}
-\]
-</div>
-
-<div>
-\[
-a_2 = \frac{1}{2}\left.\frac{\partial^2 I_a}{\partial U_{gk}^2}\right|_{Q} = \frac{3}{8}K U_{\mathrm{eff},0}^{-1/2}
-\]
-</div>
-
-<div>
-\[
-a_3 = \frac{1}{6}\left.\frac{\partial^3 I_a}{\partial U_{gk}^3}\right|_{Q} = -\frac{1}{16}K U_{\mathrm{eff},0}^{-3/2}
-\]
-</div>
-
-where \\(U_{\mathrm{eff},0}\\) is the effective bias voltage.
-
-Notice the pattern: each coefficient decays in a specific way with bias voltage. The ratio of coefficients is:
-
-\\[
-\frac{a_2}{a_1} = \frac{1}{4U_{\mathrm{eff},0}}, \qquad \frac{a_3}{a_1} = -\frac{1}{24U_{\mathrm{eff},0}^2}
-\\]
-
-For a sinusoidal input \\(u_g(t)=\hat{u}\sin\omega t\\):
-
-- The **quadratic term** produces: \\(a_2 u_g^2 = \frac{a_2\hat{u}^2}{2}\left(1-\cos 2\omega t\right)\\)
-  
-  This generates a second harmonic with amplitude \\(I_2 \approx \frac{a_2\hat{u}^2}{2}\\).
-
-- The **cubic term** produces: \\(a_3 u_g^3 = \frac{a_3\hat{u}^3}{4}\left(3\sin\omega t - \sin 3\omega t\right)\\)
-  
-  This generates a third harmonic with amplitude \\(I_3 \approx \frac{|a_3|\hat{u}^3}{4}\\).
-
-The ratio of third to second harmonic is:
-
-\\[
-\frac{I_3}{I_2} = \frac{|a_3|\hat{u}}{2a_2} \approx \frac{\hat{u}}{12U_{\mathrm{eff},0}}
-\\]
-
-If the signal amplitude \\(\hat{u}\\) is much smaller than the bias voltage \\(U_{\mathrm{eff},0}\\) (true for audio amplifiers), then \\(I_3 \ll I_2\\).
-
-Higher harmonics are suppressed even more strongly because each successive derivative is multiplied by another power of \\(U_{\mathrm{eff},0}\\) in the denominator.
-
-The figure below is from simulation, my real-world measurements show essentially the same FFT spectrum.
+Here is the RP7's simple single-end triode gain stage. Its spectrum is dominated by second-order harmonic distortion, with higher-order harmonics almost absent.
 
 ![Rudistor RP7 FFT SPECTRUM](images/Rudistor_RP7_FFT_SPECTRUM.svg)
-
-### Why This Sounds Better
-
-The triode law naturally produces **even-harmonic distortion dominated by the second harmonic**. This is not a flaw; it is the signature of the triode physics.
-
-Even-order harmonics (second, fourth, etc.) tend to be **musically consonant** with the fundamental. Odd-order harmonics (third, fifth, etc.) often sound harsher and introduce intermodulation artifacts.
-
-Simple circuits like the Rudistor RP7 have:
-1. Low overall distortion (0.01% measured).
-2. Dominated by even-order (second harmonic) content.
-3. Minimal odd-order harmonics because the \\(3/2\\)-power law suppresses them naturally.
-
-This combination creates a sound that is **subjectively pleasing and smooth**, even though it is not "distortion-free" in the engineering sense. The distortion character is determined by the tube physics, not by sloppy design.
-
-This is why simple triode amplifiers, when biased properly, often sound better than complex solid-state designs with lower measured distortion but different harmonic content.

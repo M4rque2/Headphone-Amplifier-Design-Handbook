@@ -66,4 +66,4 @@ All three tube OTL headphone amplifiers suffer from low PSRR (power-supply rejec
 
 The Maida power supply {{#cite maida1980highvoltageadjustablepowersupplies}} suits this need. Tom Christiansen also suggests a modern design that uses up-to-date components and delivers better performance.
 
-![21st Century Maida Power Supply](images/21st_century_maida_reg.png)
+![21st Century Maida Power Supply](images/21st_century_maida_reg.svg)

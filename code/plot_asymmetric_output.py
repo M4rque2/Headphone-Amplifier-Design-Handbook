@@ -39,6 +39,6 @@ ax.annotate(f'-peak = {composite[imin]:.3f}', (t[imin], composite[imin]),
 
 fig.tight_layout()
 fig.savefig('src/images/asymmetric_output.svg')
-fig.savefig('src/images/asymmetric_output.png')
+# fig.savefig('src/images/asymmetric_output.png')
 print('Saved: src/images/asymmetric_output.svg')
-print('Saved: src/images/asymmetric_output.png')
+# print('Saved: src/images/asymmetric_output.png')

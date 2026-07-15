@@ -3,9 +3,11 @@
 ## Goldmund Telos Headphone Amplifier
 The Goldmund Telos Headphone Amplifier, also short for HDA or THA. It is a fancy Premium Brand. Look at the inside:
 
-![Goldmund Telos Headphone Amplifier](images/Goldmund THA2 inside.jpg)
+![Goldmund Telos Headphone Amplifier](images/Goldmund_THA2_inside.jpg)
 
-Have you notice the "WOOFER" and "TWEETER" in the PCB board? This is a PCB board design for Goldmund active speakers, and they use the same pcb from their entry-level amplifier the Telos 7 , to their mainstream product Telos 590, and even to Their high-end product Telos 600/1000/5000. Now that PCB board installed in their headphone amplifiers.
+Have you notice the "WOOFER" and "TWEETER" in the PCB board? This is a PCB board design for Goldmund active speakers, and they use the same pcb from their entry-level amplifier the Telos 7 , to their mainstream product Telos 590, and even to Their high-end product Telos 600/1000/5000. It the technology goldmund acquired from Job Electronics. Now that PCB board installed in their headphone amplifiers.
+
+![Goldmund Apologue](images/Goldmund_apologue_active_speaker.png)
 
 No wonder reviews said they have audible noise, this is originally designed for speakers, if you just plug in headphones, of course you will hear noise. I laughed when I read this - people are way too lenient with this brand:
 
@@ -15,6 +17,6 @@ No wonder reviews said they have audible noise, this is originally designed for 
 
 Here is the schematic, notice output protection is omitted, and output stage is dual parallel:
 
-![Goldmund Telos Schematic](images/Goldmund%20Telos.svg)
+![Goldmund Telos Schematic](images/Goldmund_Telos.svg)
 
 The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin; additionally, its relatively low gain (~90dB) results in compromised power supply rejection ratio (PSR).

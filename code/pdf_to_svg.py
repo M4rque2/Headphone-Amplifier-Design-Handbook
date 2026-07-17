@@ -1,20 +1,8 @@
 #!/usr/bin/env python3
-"""Convert all PDFs in ./pdf to SVGs in ./svg with matching base names.
+"""Convert the first page of each PDF in ./pdf to a matching SVG in ./svg.
 
-Default behavior:
-- Input folder: ./pdf
-- Output folder: ./svg
-- Output file name: same as PDF, but with .svg extension
-
-The script tries available converters in this order:
-1) PyMuPDF (pure Python, recommended)
-2) inkscape
-3) pdftocairo
-
-Notes:
-- This script targets simple schematic PDFs (usually single-page).
-- For multi-page PDFs, tools may export only the first page when keeping one output name.
-- With PyMuPDF, output is auto-trimmed to content bounds (plus a small margin).
+PyMuPDF is preferred and trims blank page margins by default. Use --no-trim to
+preserve the complete PDF page area.
 """
 
 from __future__ import annotations
@@ -24,6 +12,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Callable
 
 try:
     import fitz  # PyMuPDF
@@ -31,184 +20,216 @@ except ImportError:
     fitz = None
 
 
-def run_cmd(cmd: list[str]) -> tuple[bool, str]:
+Result = tuple[bool, str]
+Converter = Callable[..., Result]
+
+
+def run_command(command: list[str]) -> Result:
+    """Run an external converter and return its status and error message."""
     try:
         completed = subprocess.run(
-            cmd,
+            command,
             check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             text=True,
         )
         return True, completed.stdout.strip()
     except subprocess.CalledProcessError as exc:
-        err = (exc.stderr or exc.stdout or "").strip()
-        return False, err
+        return False, (exc.stderr or exc.stdout or "").strip()
     except FileNotFoundError as exc:
         return False, str(exc)
 
 
-def compute_content_bbox(page: "fitz.Page") -> "fitz.Rect | None":
-    """Estimate visible content bounds from vector paths and text/image blocks."""
-    rects: list[fitz.Rect] = []
+def visible_content_bbox(
+    page: "fitz.Page", render_scale: float = 2.0
+) -> "fitz.Rect | None":
+    """Return the bounds of pixels visibly painted inside a PDF page."""
+    scale = max(1.0, render_scale)
+    pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=True)
+    samples = memoryview(pixmap.samples)
+    channels = pixmap.n
+    alpha_channel = channels - 1
 
-    for drawing in page.get_drawings():
-        rect = drawing.get("rect")
-        if rect is not None:
-            rects.append(fitz.Rect(rect))
+    left, top = pixmap.width, pixmap.height
+    right = bottom = -1
 
-    text_dict = page.get_text("dict")
-    for block in text_dict.get("blocks", []):
-        bbox = block.get("bbox")
-        if bbox is not None:
-            rects.append(fitz.Rect(bbox))
+    for y in range(pixmap.height):
+        row_start = y * pixmap.stride
+        for x in range(pixmap.width):
+            if samples[row_start + x * channels + alpha_channel]:
+                left = min(left, x)
+                top = min(top, y)
+                right = max(right, x)
+                bottom = max(bottom, y)
 
-    if not rects:
+    if right < left or bottom < top:
         return None
 
-    union = fitz.Rect(rects[0])
-    for rect in rects[1:]:
-        union |= rect
-    return union
+    return fitz.Rect(
+        left / scale,
+        top / scale,
+        (right + 1) / scale,
+        (bottom + 1) / scale,
+    )
+
+
+def trim_page(page: "fitz.Page", margin: float) -> None:
+    """Crop blank page margins while preserving all visible content."""
+    content = visible_content_bbox(page)
+    if content is None:
+        return
+
+    margin = max(0.0, margin)
+    crop = fitz.Rect(
+        content.x0 - margin,
+        content.y0 - margin,
+        content.x1 + margin,
+        content.y1 + margin,
+    )
+    crop &= page.rect
+
+    if crop.width > 0 and crop.height > 0:
+        page.set_cropbox(crop)
 
 
 def convert_with_pymupdf(
-    src_pdf: Path, dst_svg: Path, trim_margin_pt: float = 12.0
-) -> tuple[bool, str]:
-    """Convert first page of PDF to SVG using PyMuPDF."""
+    source: Path,
+    destination: Path,
+    trim: bool = True,
+    trim_margin: float = 12.0,
+) -> Result:
+    """Convert the first PDF page to SVG with PyMuPDF."""
     if fitz is None:
-        return False, "PyMuPDF is not installed. Install with: pip install pymupdf"
+        return False, "PyMuPDF is not installed. Install it with: pip install pymupdf"
 
     try:
-        doc = fitz.open(str(src_pdf))
-        if len(doc) == 0:
-            return False, "PDF has no pages"
+        with fitz.open(source) as document:
+            if not document.page_count:
+                return False, "PDF has no pages"
 
-        page = doc[0]
-        content_bbox = compute_content_bbox(page)
-        if content_bbox is not None:
-            # Add a safety margin to avoid clipping thin strokes at the edges.
-            margin = max(0.0, float(trim_margin_pt))
-            crop = fitz.Rect(
-                content_bbox.x0 - margin,
-                content_bbox.y0 - margin,
-                content_bbox.x1 + margin,
-                content_bbox.y1 + margin,
-            )
-            crop &= page.rect
-            if crop.width > 0 and crop.height > 0:
-                page.set_cropbox(crop)
+            page = document[0]
+            if trim:
+                trim_page(page, trim_margin)
 
-        svg_text = page.get_svg_image()
-        dst_svg.write_text(svg_text, encoding="utf-8")
-        doc.close()
+            destination.write_text(page.get_svg_image(), encoding="utf-8")
         return True, ""
     except Exception as exc:
         return False, str(exc)
 
 
-def convert_with_inkscape(src_pdf: Path, dst_svg: Path) -> tuple[bool, str]:
-    return run_cmd(
+def convert_with_inkscape(source: Path, destination: Path) -> Result:
+    return run_command(
         [
             "inkscape",
-            str(src_pdf),
+            str(source),
             "--export-type=svg",
-            f"--export-filename={dst_svg}",
+            f"--export-filename={destination}",
         ]
     )
 
 
-def convert_with_pdftocairo(src_pdf: Path, dst_svg: Path) -> tuple[bool, str]:
-    # pdftocairo needs an output prefix (without extension) with -singlefile.
-    out_prefix = dst_svg.with_suffix("")
-    return run_cmd(
-        ["pdftocairo", "-svg", "-singlefile", str(src_pdf), str(out_prefix)]
+def convert_with_pdftocairo(source: Path, destination: Path) -> Result:
+    return run_command(
+        [
+            "pdftocairo",
+            "-svg",
+            "-singlefile",
+            str(source),
+            str(destination.with_suffix("")),
+        ]
     )
 
 
-def pick_converter() -> tuple[str, callable] | None:
-    candidates = [
-        ("pymupdf", convert_with_pymupdf),
-        ("inkscape", convert_with_inkscape),
-        ("pdftocairo", convert_with_pdftocairo),
-    ]
-    for name, func in candidates:
-        if name == "pymupdf":
-            if fitz is not None:
-                return name, func
-            continue
-        if shutil.which(name):
-            return name, func
+def pick_converter() -> tuple[str, Converter] | None:
+    if fitz is not None:
+        return "pymupdf", convert_with_pymupdf
+    if shutil.which("inkscape"):
+        return "inkscape", convert_with_inkscape
+    if shutil.which("pdftocairo"):
+        return "pdftocairo", convert_with_pdftocairo
     return None
 
 
-def main() -> int:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Convert PDFs to SVGs while keeping file base names."
+        description="Convert the first page of each PDF to a matching SVG."
     )
     parser.add_argument(
         "--input",
         default="./pdf",
-        help="Input folder containing PDF files (default: ./pdf)",
+        help="Input folder containing PDFs (default: ./pdf)",
     )
     parser.add_argument(
         "--output",
         default="./svg",
-        help="Output folder for SVG files (default: ./svg)",
+        help="Output folder for SVGs (default: ./svg)",
+    )
+    parser.add_argument(
+        "--no-trim",
+        action="store_true",
+        help="Preserve complete PDF page areas instead of trimming blank margins",
     )
     parser.add_argument(
         "--trim-margin",
         type=float,
         default=12.0,
-        help="Trim margin in PDF points when using PyMuPDF (default: 12.0)",
+        help="Margin around detected content in PDF points (default: 12.0)",
     )
-    args = parser.parse_args()
+    return parser.parse_args()
 
-    in_dir = Path(args.input).resolve()
-    out_dir = Path(args.output).resolve()
 
-    if not in_dir.exists() or not in_dir.is_dir():
-        print(f"Input folder not found: {in_dir}", file=sys.stderr)
+def main() -> int:
+    args = parse_args()
+    input_dir = Path(args.input).resolve()
+    output_dir = Path(args.output).resolve()
+
+    if not input_dir.is_dir():
+        print(f"Input folder not found: {input_dir}", file=sys.stderr)
         return 1
 
-    pdf_files = sorted(in_dir.glob("*.pdf"))
+    pdf_files = sorted(input_dir.glob("*.pdf"))
     if not pdf_files:
-        print(f"No PDF files found in: {in_dir}")
+        print(f"No PDF files found in: {input_dir}")
         return 0
-
-    out_dir.mkdir(parents=True, exist_ok=True)
 
     converter = pick_converter()
     if converter is None:
         print(
-            "No supported converter found. Install PyMuPDF (pip install pymupdf) or install inkscape/pdftocairo.",
+            "No supported converter found. Install PyMuPDF, Inkscape, "
+            "or pdftocairo.",
             file=sys.stderr,
         )
         return 2
 
-    converter_name, converter_func = converter
+    output_dir.mkdir(parents=True, exist_ok=True)
+    converter_name, convert = converter
     print(f"Using converter: {converter_name}")
 
-    ok_count = 0
-    fail_count = 0
-
-    for pdf in pdf_files:
-        svg = out_dir / (pdf.stem + ".svg")
+    succeeded = 0
+    failed = 0
+    for pdf_path in pdf_files:
+        svg_path = output_dir / f"{pdf_path.stem}.svg"
         if converter_name == "pymupdf":
-            ok, msg = converter_func(pdf, svg, args.trim_margin)
+            ok, message = convert(
+                pdf_path,
+                svg_path,
+                not args.no_trim,
+                args.trim_margin,
+            )
         else:
-            ok, msg = converter_func(pdf, svg)
-        if ok and svg.exists():
-            ok_count += 1
-            print(f"[OK]   {pdf.name} -> {svg.name}")
-        else:
-            fail_count += 1
-            print(f"[FAIL] {pdf.name}", file=sys.stderr)
-            if msg:
-                print(f"       {msg}", file=sys.stderr)
+            ok, message = convert(pdf_path, svg_path)
 
-    print(f"Done. Success: {ok_count}, Failed: {fail_count}")
-    return 0 if fail_count == 0 else 3
+        if ok and svg_path.exists():
+            succeeded += 1
+            print(f"[OK]   {pdf_path.name} -> {svg_path.name}")
+        else:
+            failed += 1
+            print(f"[FAIL] {pdf_path.name}", file=sys.stderr)
+            if message:
+                print(f"       {message}", file=sys.stderr)
+
+    print(f"Done. Success: {succeeded}, Failed: {failed}")
+    return 0 if failed == 0 else 3
 
 
 if __name__ == "__main__":

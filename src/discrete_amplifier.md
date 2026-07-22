@@ -1,11 +1,35 @@
 # Chapter 5
 
+Discrete amplifiers can be complicated, so I will start from a simple schematic.
+
+## Rudistor RP030
+
+The RudiStor RP030 is a characterful, musical amplifier with a distinctive "Italian sound" — warm, relaxed, and engaging. It excels with Sennheiser and similar high-impedance headphones but requires balanced connections to realize its full potential. Build quality is a concern for some users, and it lacks the raw power/density needed for planar magnetic headphones.
+
+![Rudistor RP030](images/Rudistor_RP030.svg)
+
+It uses a differential input/amplification stage with a single-ended class A output stage. It is inherently a balanced amplifier, but can operate in single-ended mode by leaving one arm of the input or output stage unused. 
+
+When used in full balanced mode, if the two JFETs in the input stage are carefully paired, second-order distortion is canceled. The distortion spectrum from simulation is shown below:
+
+![Rudistor RP030 Distortion Spectrum Balance](images/Rudistor_RP030_Dist_Bal.svg)
+
+When operating in single-ended mode, the cancellation is ineffective, and second-order distortion is present.
+
+![Rudistor RP030 Distortion Spectrum RCA](images/Rudistor_RP030_Dist_RCA.svg)
+
+Its gain and phase plot is as follows:
+
+![Rudistor RP030 Gain Phase](images/Rudistor_RP030_Gain_Phase.svg)
+
+The RP030 uses no global negative feedback, so there is no concern for phase margin, and its frequency response is flat up to about 800KHz. It has 20dB gain, which is high for a headphone amplifier; R4 and R7 are variable resistors after the potentiometer to further reduce the input signal level. The negative rail power is underutilized, as the output is constrained from swinging below 0V.
+
 ## Goldmund Telos Headphone Amplifier
-The Goldmund Telos Headphone Amplifier, also short for HDA or THA. It is a fancy Premium Brand. Look at the inside:
+The Goldmund Telos Headphone Amplifier, also known as HDA or THA, is a premium luxury brand. Look at the inside:
 
 ![Goldmund Telos Headphone Amplifier](images/Goldmund_THA2_inside.jpg)
 
-Have you notice the "WOOFER" and "TWEETER" in the PCB board? This is a PCB board design for Goldmund active speakers, and they use the same pcb from their entry-level amplifier the Telos 7 , to their mainstream product Telos 590, and even to Their high-end product Telos 600/1000/5000. It the technology goldmund acquired from Job Electronics. Now that PCB board installed in their headphone amplifiers.
+Have you noticed the "WOOFER" and "TWEETER" labels on the PCB? This is a PCB design for Goldmund active speakers, and they use the same PCB from their entry-level amplifier, the Telos 7, to their mainstream product, the Telos 590, and even to their high-end products, the Telos 600/1000/5000. It's the technology Goldmund acquired from Job Electronics. This PCB is now installed in their headphone amplifiers.
 
 ![Goldmund Apologue](images/Goldmund_apologue_active_speaker.png)
 
@@ -19,4 +43,4 @@ Here is the schematic, notice output protection is omitted, and output stage is 
 
 ![Goldmund Telos Schematic](images/Goldmund_Telos.svg)
 
-The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin; additionally, its relatively low gain (~90dB) results in compromised power supply rejection ratio (PSR).
+The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin; additionally, its relatively low open-loop gain results in compromised power supply rejection ratio (PSR).

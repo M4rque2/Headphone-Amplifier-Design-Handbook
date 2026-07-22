@@ -32,8 +32,6 @@ Single Power Audio Inc., founded by Mikhail Rotenberg in Colorado, USA, has been
 
 Despite these issues, their amplifiers sounded fabulous, and there is an ingenious trick in the circuit design. That why I must introduce their circuit design in thisbook.
 
-
-
 ![SinglePower MPX-3](images/SinglePower_MPX3.svg)
 
 The SinglePower MPX-3 was the mid-range model in its product line, selling for about $1000 at the time. It is a differential-input, cathode-follower-output amplifier with no global feedback. This kind of simple textbook circuits that needs little explanation.
@@ -60,14 +58,3 @@ Thus, in this meticulous configuration, distortions are either canceled or not g
 Here I propose a modern modification of the Yeli 8PR that removes the need for a -70 V power supply by using a BJT constant-current source as its differential tail.
 
 ![Yeli 8PR Modern](images/Yeli_8PR_Modern.svg)
-
-## Maida Power Supply
-All three tube OTL headphone amplifiers suffer from low PSRR (power-supply rejection ratio), so they need a precision power supply with extremely low ripple.
-
-The Maida power supply {{#cite maida1980highvoltageadjustablepowersupplies}} suits this need. Tom Christiansen also suggests a modern design that uses up-to-date components and delivers better performance.
-
-![21st Century Maida Power Supply](images/21st_century_maida_reg.svg)
-
-[Michael Maida's original regulator](https://www.ti.com/lit/an/snva583/snva583.pdf) uses a floating three-terminal regulator behind a high-voltage pass device. The regulator IC sees only a small input-to-output voltage, while the pass device withstands most of the B+ voltage. This makes it possible to regulate supplies of several hundred volts without applying the full voltage across the low-voltage regulator IC.
-
-[Tom Christiansen's 21st Century Maida](https://www.diyaudio.com/community/threads/21st-century-maida-regulator.209067/) retains this principle but replaces the LM317 with an LT3080 and uses a high-voltage MOSFET cascode. The LT3080 requires less minimum-load current and has lower dropout, reducing dissipation in the feedback network. Soft start and protection diodes improve behavior during startup, shutdown, and load transients; Christiansen reported about 20 uV RMS of output ripple and noise with 50 V peak-to-peak ripple at the input.

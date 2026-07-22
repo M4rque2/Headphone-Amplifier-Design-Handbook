@@ -4,11 +4,13 @@ Discrete amplifiers can be complicated, so I will start from a simple schematic.
 
 ## Rudistor RP030
 
-The RudiStor RP030 is a characterful, musical amplifier with a distinctive "Italian sound" — warm, relaxed, and engaging. It excels with Sennheiser and similar high-impedance headphones but requires balanced connections to realize its full potential. Build quality is a concern for some users, and it lacks the raw power/density needed for planar magnetic headphones.
+![Rudistor RP030](images/Rudistor_RP030.jpg)
+
+The RudiStor RP030 was launched around 2011 at an approximately US$5,000 price point. Designed as RudiStor’s flagship solid-state headphone amplifier, it uses a fully balanced quad-mono architecture and provides both balanced and single-ended inputs and outputs. Owners commonly describe its sound as spacious, refined, slightly warm, and especially attractive with high-impedance dynamic headphones such as the Sennheiser HD800. Some listeners, however, find it less forceful with demanding planar-magnetic headphones, while its very high price and inconsistent build quality attracted criticism.
 
 ![Rudistor RP030](images/Rudistor_RP030.svg)
 
-It uses a differential input/amplification stage with a single-ended class A output stage. It is inherently a balanced amplifier, but can operate in single-ended mode by leaving one arm of the input or output stage unused. 
+It uses a differential input/amplification stage with a single-ended class A output stage. It is inherently a balanced amplifier, but can operate in single-ended mode by leaving one arm of the input or output stage unused.
 
 When used in full balanced mode, if the two JFETs in the input stage are carefully paired, second-order distortion is canceled. The distortion spectrum from simulation is shown below:
 
@@ -24,8 +26,25 @@ Its gain and phase plot is as follows:
 
 The RP030 uses no global negative feedback, so there is no concern for phase margin, and its frequency response is flat up to about 800KHz. It has 20dB gain, which is high for a headphone amplifier; R4 and R7 are variable resistors after the potentiometer to further reduce the input signal level. The negative rail power is underutilized, as the output is constrained from swinging below 0V.
 
+## NAIM Headline Headphone Amplifier (NAHA)
+
+![Naim Headline Headphone Amplifier](images/Naim_Headline.jpg)
+
+The Naim HeadLine was launched in 1998 at a launch-era price of approximately £400 for a usable system—£215 for the amplifier and £185 for the required NAPSC power supply. This compact British headphone amplifier follows Naim’s modular philosophy: it has no internal power supply and can instead be powered by a NAPSC, FlatCap, HiCap, or SuperCap. Naim promoted the HeadLine as a low-noise, low-distortion amplifier for high-quality headphones, while owners commonly praise its rhythmic, dynamic, and coherent presentation.
+
+![NAHA](images/Naim_NAHA_headline.svg)
+
+The NAHA is classic 3 stage amplifier architecture. Q7 as VAS stage improve the gain from about 17dB to 84dB. That is 67dB gain across Q7, Let's say it 66dB for esay math calculation. 20dB gain is 10 times in voltage, 6db gain is 2 times, so 66dB is 1000 x 2 = 2000 times in voltage. Miller effect will make C4 appear 2000 times larger: about 79nF. Creating a dominiant pole at about 3.5Khz. Therefor it has phase margin of about 65° and gain margin of 10dB.
+
+![Naim Headline Headphone Amplifier Gain Phase](images/Naim_NAHA_headline_gain_phase.svg)
+
 ## Goldmund Telos Headphone Amplifier
-The Goldmund Telos Headphone Amplifier, also known as HDA or THA, is a premium luxury brand. Look at the inside:
+
+![Goldmund THA2](images/Goldmund_THA2.jpg)
+
+The Goldmund Telos Headphone Amplifier—also called the Telos HDA or THA—was launched in 2014 at approximately US$10,000, or ¥1.65 million in Japan. This substantial Swiss-made amplifier combines Goldmund’s wide-bandwidth Telos amplification circuitry with a built-in DAC and two headphone outputs. Reviewers praised its precise construction and clean, detailed, weighty sound, although some users reported audible background noise with sensitive headphones and questioned whether its performance justified the exceptionally high price. It was succeeded in 2015 by the Telos Headphone Amplifier 2, or THA2, priced at £9,250 in the UK.
+
+Look at the inside:
 
 ![Goldmund Telos Headphone Amplifier](images/Goldmund_THA2_inside.jpg)
 
@@ -44,3 +63,11 @@ Here is the schematic, notice output protection is omitted, and output stage is 
 ![Goldmund Telos Schematic](images/Goldmund_Telos.svg)
 
 The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin; additionally, its relatively low open-loop gain results in compromised power supply rejection ratio (PSR).
+
+## McIntosh MHA-150 Headphone Amplifier
+
+![McIntosh MHA-150](images/McIntosh_MHA150_Front.jpg)
+
+The McIntosh MHA150 was launched in 2016 at US$4,500. Although marketed primarily as a headphone amplifier, it is actually a compact all-in-one system combining a high-resolution DAC, a dedicated headphone amplifier, a preamplifier, and a 50-watt-per-channel speaker amplifier. McIntosh’s output Autoformers provide three selectable headphone-impedance ranges, while its speaker outputs can drive efficient desktop or bookshelf speakers. Reviewers praised its powerful, open and refined headphone performance, capable DAC, and versatility, although its limited analogue inputs and modest speaker power make it better suited to a desktop or small-room system than to demanding floorstanding speakers.
+
+![McIntosh MHA-150](images/McIntosh_MHA150_Back.jpg)

@@ -14,6 +14,10 @@ To explain this non-technically, imagine the relationship between a driver (the 
 
 A more detailed explanation can be found in "Composite Amplifiers: High Output Drive Capability with Precision" by Jino Loquinario from ADI {{#cite jino2019compositeampadi}}.
 
+The Topping A90 was launched in 2020 at US$499. Although it was not the first Chinese headphone amplifier to achieve excellent measurements, it became a landmark product by combining extremely low noise and distortion with high output power at a relatively affordable price. Its fully balanced NFCA circuitry delivers up to 7.6 W into 16 ohms, with a specified dynamic range of 145 dB and THD below 0.00007%. Reviewers praised its transparent, neutral sound and ability to drive everything from sensitive IEMs to demanding planar headphones, although some found its presentation somewhat sterile or lacking soundstage depth.
+
+![Topping A90](images/Topping_A90.jpg)
+
 The Topping A90 is the "slow-driver / fast-output" composite amplifier I described above: an OPA1612 drives two TPA6120A2. The OPA1612 has about 40 MHz gain-bandwidth product (GBW); though TI does not explicitly list GBW for TPA6120A2, I know it is basically THS6012 which has about 300MHz GBW.
 
 Usually we do not factor the output stage's phase and gain variations into the amplifier's global stability analysis, treating it as if it were an ideal unity-gain buffer — one with infinite bandwidth that introduces no phase shift. This is, of course, not true. The output stage does generate phase shift, at a frequency set by the parasitic capacitance contributed by the headphone coil and its lead wires.

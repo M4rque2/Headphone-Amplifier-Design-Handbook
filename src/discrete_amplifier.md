@@ -34,7 +34,19 @@ The Naim HeadLine was launched in 1998 at a launch-era price of approximately £
 
 ![NAHA](images/Naim_NAHA_headline.svg)
 
-The NAHA is classic 3 stage amplifier architecture. Q7 as VAS stage improve the gain from about 17dB to 84dB. That is 67dB gain across Q7, Let's say it 66dB for esay math calculation. 20dB gain is 10 times in voltage, 6db gain is 2 times, so 66dB is 1000 x 2 = 2000 times in voltage. Miller effect will make C4 appear 2000 times larger: about 79nF. Creating a dominiant pole at about 3.5Khz. Therefor it has phase margin of about 65° and gain margin of 10dB.
+The NAHA uses a classic three-stage amplifier architecture. Q7 is the voltage-amplification stage (VAS), increasing the open-loop gain from about 17 dB to 84 dB. This is a gain of 67 dB; using 66 dB for a simple approximation gives:
+
+$$ A_v \approx 10^{66/20} \approx 2000 $$
+
+Through the Miller effect, C4 therefore appears at the base of Q7 as approximately:
+
+$$ C_M \approx C_4(1 + A_v) \approx 39\text{ pF} \times 2001 \approx 78\text{ nF} $$
+
+R12 is part of the resistance that determines the pole, but it is in parallel with the small-signal impedances of Q7 and Q8. An effective resistance of about 580 Ω, consistent with the simulated response, gives:
+
+$$ f_p \approx \frac{1}{2\pi R_{\text{eff}}C_M} \approx \frac{1}{2\pi(580\ \Omega)(78\text{ nF})} \approx 3.5\text{ kHz} $$
+
+The simulation shows a phase margin of about 65° and a gain margin of about 10 dB.
 
 ![Naim Headline Headphone Amplifier Gain Phase](images/Naim_NAHA_headline_gain_phase.svg)
 

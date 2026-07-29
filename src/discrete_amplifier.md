@@ -74,12 +74,24 @@ Here is the schematic, notice output protection is omitted, and output stage is 
 
 ![Goldmund Telos Schematic](images/Goldmund_Telos.svg)
 
-The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin; additionally, its relatively low open-loop gain results in compromised power supply rejection ratio (PSR).
+The circuit employs a high-bandwidth architecture for fast transient response, but this comes at the cost of limited phase margin and open-loop gain about 95 dB (from simulation), it is not unity-gain stable, the minimum stable gain > 4 and it suffers from compromised power supply rejection ratio (PSRR).
 
 ## McIntosh MHA-150 Headphone Amplifier
 
 ![McIntosh MHA-150](images/McIntosh_MHA150_Front.jpg)
 
+![McIntosh MHA-150](images/McIntosh_MHA150_Back.jpg)
+
 The McIntosh MHA150 was launched in 2016 at US$4,500. Although marketed primarily as a headphone amplifier, it is actually a compact all-in-one system combining a high-resolution DAC, a dedicated headphone amplifier, a preamplifier, and a 50-watt-per-channel speaker amplifier. McIntosh’s output Autoformers provide three selectable headphone-impedance ranges, while its speaker outputs can drive efficient desktop or bookshelf speakers. Reviewers praised its powerful, open and refined headphone performance, capable DAC, and versatility, although its limited analogue inputs and modest speaker power make it better suited to a desktop or small-room system than to demanding floorstanding speakers.
 
-![McIntosh MHA-150](images/McIntosh_MHA150_Back.jpg)
+![McIntosh MHA-150 Schematic](images/McIntosh%20MHA-150.svg)
+
+The schematic is generally the same as entry-level McIntosh Integrated Amplifiers MA6300, But 1 less output transistor pair, and 50W less output power. It use a complementary double input differential pair and so a push-pull VAS stage.
+
+For ease of understanding, the lower half is dropped, the circuit is simplified as follows:
+
+![McIntosh MHA-150 Half](images/McIntosh%20MHA-150_Half.svg)
+
+At first glance, the circuit may appear to be a traditional three-stage amplifier. However, it is not: Q2 and U3 form a folded-cascode circuit, not a voltage-amplification stage (VAS). Unlike most of the folded-cascode circuit I have ever seen that folds both arm of the input differential pair, MHA-150 feed the voltage gain of another arm to the base of Q2 by Q3 in a emit follower setup. Very interesting design, especially look compares it with the The Kuroda Discrete op-amp.
+
+

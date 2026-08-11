@@ -18,6 +18,8 @@ Also note that the LME49600 output buffer has about 100 MHz bandwidth. When driv
 ## The Graham Slee SOLO Headphone Amplifier
 This is an old-fashioned headphone amplifier that is especially suitable for driving the Sennheiser HD600/HD650 (and likely the HD660S2). Its measured performance is often debated, but in practice it drives these older Sennheiser headphones very well.
 
+![Graham Slee SOLO ULDE](images/Graham_Slee_SOLO_ULDE.jpg)
+
 There are many SOLO versions; the one shown here is the latest SOLO ULDE version.
 
 ![Graham Slee SOLO](images/Graham%20Slee%20SOLO.svg)
@@ -35,9 +37,11 @@ Some designers dislike output resistors and degeneration resistors. If the bias 
 Although it is listed on the official website as opearting in Class AB, it is actually operating in Class A at normal listening levels with HD600/HD650 loads. With lower-impedance headphones, it moves toward Class B operation and distortion rises quickly. This may explain why user opinions are polarized.
 
 ## Beyerdynamic A1 Headphone Amplifier
+![Beyerdynamic A1](images/beyerdynamic_A1.webp)
+
 This is another veteran headphone amplifier, designed by Beyerdynamic to drive its DT880/DT990 headphones.
 
-![Beyerdynamic A1](images/Bayerdynamic%20A1.svg)
+![Beyerdynamic A1 Schematic](images/Bayerdynamic%20A1.svg)
 
 It is a Class A design. The output bias current is about 50 mA, which is just enough to drive 300-ohm DT880 headphones at maximum output. It uses simple diode (LED) biasing without thermal coupling, so it needs a higher degeneration resistor value; therefore, no need for output resistor unlike SOLO.
 
@@ -50,9 +54,12 @@ The op-amp is configured for inverting gain. For many older op-amps with only mo
 An input buffer is added because, in an inverting topology, a 2 kΩ input resistor (R9) presents too heavy a load for typical CD/DAC outputs. If R9 is increased to 47 kΩ, the feedback resistor must exceed 200 kΩ to keep the same gain, which raises resistor noise to an audible level.
 
 ## Lehmann Audio Linear Headphone Amplifier
+
+![Lehmann Audio Linear](images/Lehmann%20Audio%20Linear.jpg)
+
 This is another old-fashioned headphone amplifier that pairs well with HD600/HD650.
 
-![Lehmann Audio Linear](images/Lehmann%20Linear.svg)
+![Lehmann Audio Linear Schematic](images/Lehmann%20Linear.svg)
 
 It uses a diamond buffer output stage, where the output bias current is set by resistor ratios (R8/R3 and R9/R4). This is different from the simpler diode-biased output stages in SOLO/A1, where bias current is harder to set precisely.
 

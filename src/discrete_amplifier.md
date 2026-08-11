@@ -94,4 +94,8 @@ For ease of understanding, the lower half is dropped, the circuit is simplified 
 
 At first glance, the circuit may appear to be a traditional three-stage amplifier. However, it is not: Q2 and U3 form a folded-cascode circuit, not a voltage-amplification stage (VAS). Unlike most of the folded-cascode circuit I have ever seen that folds both arm of the input differential pair, MHA-150 feed the voltage gain of another arm to the base of Q2 by Q3 in a emit follower setup. Very interesting design, especially look compares it with the The Kuroda Discrete op-amp.
 
+## The Kuroda Discrete OP-AMP
+
+This is Discrete op-amp design introduced in Chapter 4 of his book "解析 OPアンプ&トランジスタ活用" {{#cite kuroda2015opamp}} , but this book is never translated into english. However it is very elegant design, it can use as a headphone amplifer if given greater output capability.
+
 

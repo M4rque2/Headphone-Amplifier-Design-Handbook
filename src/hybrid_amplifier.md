@@ -44,13 +44,14 @@ Second-harmonic distortion dominates both stages. Because the gain and output st
 
 Benefiting from this two distortion cancellation techniques, its measured performance is decent, at around 0.01% distortion as the manufacturer claims, yet it sounds absolutely lovely. It is one of my personal favourites.
 
-Nelson Pass famously said, "Simple Sounds Better" {{#cite norton1991simplesoundsbetter}}. The Rudistor RP7 is one of the clearest examples of why this idea works in practice: a simple topology with few stages, carefully tuned device behavior, and a benign distortion spectrum can produce both convincing measurements and highly natural sound.
+## “Simple Sounds Better”
 
-## Why “Simple Sounds Better”
-
-In an interview with *Stereophile*, Pass explains {{#cite norton1991simplesoundsbetter}}:
+In an interview with *Stereophile*, Nelson Pass famously said {{#cite norton1991simplesoundsbetter}}:
 
 > The simpler you can make an amplifier, the more likely there is to be good correspondence between the sonic performance and what you measure on a bench. The more complex, the less likely that is to occur.
+
+The Rudistor RP7 is one of the clearest examples of why this idea works in practice: a simple topology with few stages, carefully tuned device behavior, and a benign distortion spectrum can produce both convincing measurements and highly natural sound.
+
 
 I agree, and would add that a simple topology makes careful tuning of each device practical. The operating point of each tube or transistor can be adjusted with its characteristic curves—its “personality”—in mind and in relation to the circuit as a whole.
 

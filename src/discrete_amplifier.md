@@ -1,6 +1,18 @@
 # Chapter 5
 
-Discrete amplifiers can be complicated, so I will start from a simple schematic.
+Negative feedback reduces distortion. It is therefore tempting to pursue extremely high open-loop gain and deep global feedback, especially because this can produce excellent distortion measurements at 1 kHz. However, high gain alone does not guarantee such circuit sounds good.
+
+In a conventional dominant-pole-compensated amplifier, increasing the low-frequency gain usually pushes the dominant pole to a lower frequency. The dominant pole adds up to 90 degrees of phase lag. A second pole adds another 45 degrees at its corner frequency and approaches 90 degrees above it. To maintain a phase margin of at least about 45 degrees, the loop gain should normally fall below unity (0 dB) before reaching the second pole. Two-pole and other higher-order compensation schemes can extend the useful loop gain, but they also add complexity that I prefer to avoid here.
+
+Consider an amplifier with 120 dB of open-loop gain and a dominant pole at 10 Hz. Above that pole, its gain falls 20 dB per decade, so it does not reach unity gain until about 10 MHz. In a unity-gain feedback configuration, the second pole must therefore be near or above 10 MHz for adequate stability. This is difficult, although possible with high-speed devices.
+
+Such an amplifier will probably measure very low distortion at 1 kHz. The cost becomes clearer at higher frequencies: by 10 kHz, the open-loop gain has already fallen by 60 dB, leaving only 60 dB for negative feedback. As the loop gain decreases, distortion rises. A single low-frequency measurement can therefore hide much weaker performance near the upper end of the audio band.
+
+One alternative is to trade excessive low-frequency gain for wider open-loop bandwidth, while preserving useful feedback through the audio band. Local feedback around an internal stage can reduce its low-frequency gain and move the dominant pole upward. Graham Slee markets a related bandwidth-extension approach as *Ultra-Linear*, while Douglas Self discusses this design goal under “Manipulating Open-Loop Bandwidth” in the chapter “The Voltage-Amplifier Stage” of *Audio Power Amplifier Design Handbook*. McIntosh uses another method, which will be examined later in this chapter.
+
+The other approach is to make the amplifier as linear as possible before applying global feedback. Negative feedback reduces distortion by a finite factor; it does not eliminate it. 
+
+This chapter begins with simple schematics and progresses to more complex designs, explaining the techniques each one uses.
 
 ## Rudistor RP030
 
@@ -34,9 +46,7 @@ The Naim HeadLine was launched in 1998 at a launch-era price of approximately £
 
 ![NAHA](images/Naim_NAHA_headline.svg)
 
-The NAHA uses a classic three-stage amplifier architecture. Q7 is the voltage-amplification stage (VAS), increasing the open-loop gain from about 17 dB to 84 dB. This is a gain of 67 dB; using 66 dB for a simple approximation gives:
-
-$$ A_v \approx 10^{66/20} \approx 2000 $$
+The NAHA uses a classic three-stage amplifier architecture. Q7 is the voltage-amplification stage (VAS), increasing the open-loop gain from about 17 dB to 84 dB. This is a gain of 67 dB; using 66 dB for a simple approximation, in which 20 dB is $\times 10$, 60 dB is $\times 10^3$, and 6 dB is $\times 2$, altogether 66 dB gives about $A_v \approx 2000$ gain.
 
 Through the Miller effect, C4 therefore appears at the base of Q7 as approximately:
 
@@ -97,5 +107,3 @@ At first glance, the circuit may appear to be a traditional three-stage amplifie
 ## The Kuroda Discrete OP-AMP
 
 This is Discrete op-amp design introduced in Chapter 4 of his book "解析 OPアンプ&トランジスタ活用" {{#cite kuroda2015opamp}} , but this book is never translated into english. However it is very elegant design, it can use as a headphone amplifer if given greater output capability.
-
-

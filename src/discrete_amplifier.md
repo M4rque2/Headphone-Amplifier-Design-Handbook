@@ -1,16 +1,40 @@
 # Chapter 5
 
-Negative feedback reduces distortion. It is therefore tempting to pursue extremely high open-loop gain and deep global feedback, especially because this can produce excellent distortion measurements at 1 kHz. However, high gain alone does not guarantee such circuit sounds good.
+Negative feedback improves nearly every aspect of an amplifier: it lowers output impedance, increases damping factor and PSRR, flattens the frequency response, and most well-known, reduces distortion. 
 
-In a conventional dominant-pole-compensated amplifier, increasing the low-frequency gain usually pushes the dominant pole to a lower frequency. The dominant pole adds up to 90 degrees of phase lag. A second pole adds another 45 degrees at its corner frequency and approaches 90 degrees above it. To maintain a phase margin of at least about 45 degrees, the loop gain should normally fall below unity (0 dB) before reaching the second pole. Two-pole and other higher-order compensation schemes can extend the useful loop gain, but they also add complexity that I prefer to avoid here.
+This can motivate designers to pursue higher open-loop gain for deeper global feedback, especially because this can produce excellent distortion measurements at 1 kHz. However, low distortion does not guarantee good sound. adequate phase margin must also be considered.
 
-Consider an amplifier with 120 dB of open-loop gain and a dominant pole at 10 Hz. Above that pole, its gain falls 20 dB per decade, so it does not reach unity gain until about 10 MHz. In a unity-gain feedback configuration, the second pole must therefore be near or above 10 MHz for adequate stability. This is difficult, although possible with high-speed devices.
+Feedback theory requires positive phase and gain margins for stability, but merely positive margins may produce severe ringing. A Hi-Fi audio amplifier should generally have at least about 45° of phase margin—preferably around 60°.
 
-Such an amplifier will probably measure very low distortion at 1 kHz. The cost becomes clearer at higher frequencies: by 10 kHz, the open-loop gain has already fallen by 60 dB, leaving only 60 dB for negative feedback. As the loop gain decreases, distortion rises. A single low-frequency measurement can therefore hide much weaker performance near the upper end of the audio band.
+A small-signal square-wave test is useful for examining an amplifier’s transient response and revealing possible stability problems. A square wave contains a fundamental and a series of odd harmonics extending to high frequencies. If the amplifier has inadequate phase margin or an underdamped high-frequency response, its output may exhibit overshoot or ringing at each transition. Graham Slee has associated this type of ringing with an “icy-bright” sound {{#cite slee2011bandwidth}}. Related discussions of feedback stability, transient distortion, and sonic character can be found in Crowhurst {{#cite crowhurst1957amplifiers}}, Otala {{#cite otala1970transient}}, Cherry {{#cite cherry1982feedback}}, Koren {{#cite koren1997spice}}, and Putzeys {{#cite putzeys2010fword}}.
 
-One alternative is to trade excessive low-frequency gain for wider open-loop bandwidth, while preserving useful feedback through the audio band. Local feedback around an internal stage can reduce its low-frequency gain and move the dominant pole upward. Graham Slee markets a related bandwidth-extension approach as *Ultra-Linear*, while Douglas Self discusses this design goal under “Manipulating Open-Loop Bandwidth” in the chapter “The Voltage-Amplifier Stage” of *Audio Power Amplifier Design Handbook*. McIntosh uses another method, which will be examined later in this chapter.
+Two published measurements illustrate these effects. In *Stereophile*'s measurement of the Woo Audio WA5, the 10 kHz square-wave response shows small, quickly damped ringing after each transition.
 
-The other approach is to make the amplifier as linear as possible before applying global feedback. Negative feedback reduces distortion by a finite factor; it does not eliminate it. 
+![Woo Audio WA5 10 kHz square-wave response showing damped ringing](images/Stereophile_Woo_WA5_10kHz_squarewave.jpg)
+
+*Woo Audio WA5, small-signal 10 kHz square wave into 8 ohms. Source: [Stereophile measurements](https://www.stereophile.com/content/woo-audio-wa5-integrated-amplifierheadphone-amplifier-measurements).*
+
+The HeadRoom BlockHead headphone amplifier provides another example. Its ultrasonic response peaks slightly above 200 kHz, and the corresponding 10 kHz square-wave response shows overshoot at the leading edges.
+
+![HeadRoom BlockHead high-gain 10 kHz square-wave response showing overshoot](images/Stereophile_HeadRoom_BlockHead_10kHz_squarewave.jpg)
+
+*HeadRoom BlockHead, high gain, small-signal 10 kHz square wave into 600 ohms. Source: [Stereophile measurements](https://www.stereophile.com/content/headroom-blockhead-headphone-amplifier-measurements).*
+
+In a conventional dominant-pole-compensated amplifier, raising the open-loop gain requires moving the dominant pole downward to preserve stability. The dominant pole contributes 90 degrees of phase lag, a second pole contributes another 45 degrees at its corner frequency. To retain a phase margin of at least 45 degrees, the open-loop gain should cross unity before the second pole.
+
+Consider an amplifier with 120 dB of open-loop gain and its dominant pole at 10 Hz. Above that pole, its gain falls at 20 dB per decade, reaching unity-gain at 10 MHz. The second pole must therefore be near or above 10 MHz to guarantee unity-gain stable. This is demanding, although possible with high-speed devices.
+
+Such an amplifier may measure low distortion at 1 kHz. By 10 kHz, however, its open-loop gain has fallen by 60 dB, leaving only 60 dB of gain for feedback. As loop gain continues to fall, the closed-loop distortion normally rises.
+
+The graph below is a measurement of Benchmark HPA4. The load dependence distortion shows that more residual error at high frequency under heavier loading, I guess the distorion generated by output stage are not efficiently corrected by negative feedback at higher frequency.
+
+![Benchmark HPA4 THD+N versus frequency](images/Benchmark_HPA4_THDvsFrequency.png)
+
+*Benchmark HPA4 XLR preamplifier input/output path at 4 V and 0 dB gain, THD+N versus frequency with a 90 kHz measurement bandwidth. The nearly coincident dark-green and green traces are the two channels driving 600 Ω. Sources: [Audio Science Review](https://www.audiosciencereview.com/forum/index.php?threads/review-and-measurements-of-benchmark-hpa4-headphone-amp-pre.8141/).*
+
+Some designers consider rising distortion at higher frequencies a potential problem, an alternative approach is to lower open-loop gain, move the dominant pole upward, preserving useful open-loop gain through more of the audio band. Instead of very high gain followed by an early roll-off.
+
+Graham Slee markets a related bandwidth-extension approach as *Ultra-Linear*, while Douglas Self discusses this design goal under “Manipulating Open-Loop Bandwidth” in the chapter “The Voltage-Amplifier Stage” of *Audio Power Amplifier Design Handbook*. McIntosh uses another method, which will be examined later in this chapter.
 
 This chapter begins with simple schematics and progresses to more complex designs, explaining the techniques each one uses.
 
@@ -18,17 +42,17 @@ This chapter begins with simple schematics and progresses to more complex design
 
 ![Rudistor RP030](images/Rudistor_RP030.jpg)
 
-The RudiStor RP030 was launched around 2011 at an approximately US$5,000 price point. Designed as RudiStor’s flagship solid-state headphone amplifier, it uses a fully balanced quad-mono architecture and provides both balanced and single-ended inputs and outputs. Owners commonly describe its sound as spacious, refined, slightly warm, and especially attractive with high-impedance dynamic headphones such as the Sennheiser HD800. Some listeners, however, find it less forceful with demanding planar-magnetic headphones, while its very high price and inconsistent build quality attracted criticism.
+The RudiStor RP030 was launched around 2011 at approximately US$5,000. Designed as RudiStor’s flagship solid-state headphone amplifier, it uses a fully balanced quad-mono architecture and provides both balanced and single-ended inputs and outputs. Owners commonly describe its sound as spacious, refined, slightly warm, and especially attractive with high-impedance dynamic headphones such as the Sennheiser HD800. Some listeners, however, find it less forceful with demanding planar-magnetic headphones, while its very high price and inconsistent build quality attracted criticism.
 
 ![Rudistor RP030](images/Rudistor_RP030.svg)
 
 It uses a differential input/amplification stage with a single-ended class A output stage. It is inherently a balanced amplifier, but can operate in single-ended mode by leaving one arm of the input or output stage unused.
 
-When used in full balanced mode, if the two JFETs in the input stage are carefully paired, second-order distortion is canceled. The distortion spectrum from simulation is shown below:
+When opearted in fully balanced, carefully matched JFETs input stage can cancels second-order distortion at the balanced output. The distortion spectrum from simulation is shown below:
 
 ![Rudistor RP030 Distortion Spectrum Balance](images/Rudistor_RP030_Dist_Bal.svg)
 
-When operating in single-ended mode, the cancellation is ineffective, and second-order distortion is present.
+When operated in single-ended, this cancellation is ineffective, and second-order distortion is present.
 
 ![Rudistor RP030 Distortion Spectrum RCA](images/Rudistor_RP030_Dist_RCA.svg)
 
@@ -36,7 +60,7 @@ Its gain and phase plot is as follows:
 
 ![Rudistor RP030 Gain Phase](images/Rudistor_RP030_Gain_Phase.svg)
 
-The RP030 uses no global negative feedback, so there is no concern for phase margin, and its frequency response is flat up to about 800KHz. It has 20dB gain, which is high for a headphone amplifier; R4 and R7 are variable resistors after the potentiometer to further reduce the input signal level. The negative rail power is underutilized, as the output is constrained from swinging below 0V.
+The RP030 uses no global negative feedback, so there is no concern for phase margin, and its frequency response is flat up to about 800 kHz. It has 20 dB gain, which is high for modern headphones, so R4 and R7 are placed after the potentiometer to further reduce the input signal level. The negative rail power is underutilized, as the output is constrained from swinging below 0 V.
 
 ## NAIM Headline Headphone Amplifier (NAHA)
 
@@ -70,17 +94,17 @@ Look at the inside:
 
 ![Goldmund Telos Headphone Amplifier](images/Goldmund_THA2_inside.jpg)
 
-Have you noticed the "WOOFER" and "TWEETER" labels on the PCB? This is a PCB design for Goldmund active speakers, and they use the same PCB from their entry-level amplifier, the Telos 7, to their mainstream product, the Telos 590, and even to their high-end products, the Telos 600/1000/5000. It's the technology Goldmund acquired from Job Electronics. This PCB is now installed in their headphone amplifiers.
+Have you noticed the "WOOFER" and "TWEETER" labels on the PCB? This is a PCB design for Goldmund active speakers, and they use the same PCB from their entry-level amplifier, the Telos 7, to their mainstream product, the Telos 590, and even to their high-end products, the Telos 600/1000/5000. It's the technology Goldmund acquired from Job Electronics.
 
 ![Goldmund Apologue](images/Goldmund_apologue_active_speaker.png)
 
-No wonder reviews said they have audible noise, this is originally designed for speakers, if you just plug in headphones, of course you will hear noise. I laughed when I read this - people are way too lenient with this brand:
+Reviewers’ reports of audible background noise are not surprising: the amplifier module was originally designed for loudspeakers, its noise performance not have been optimized for sensitive headphones. I was surprised by how leniently the reviewer treated this flaw in such an expensive product:
 
 > 在講THA 2的聲音表現之前，要提一件THA 2讓我感到困惑的地方，就是耳機一插上去就可以感受到些許電氣底噪，照理說，以THA 2的等級，應該背景安安靜靜，幾乎感受不到電氣底噪才對，但是我不管換上Pioneer SE-Master1、Sony MDR-1R MKII或Audeze EL-8，都感受得到THA 2的底噪，只有搭Sennhessier HD800S或HIFIMAN HE1000，THA 2的底噪才不那麼明顯。這耳機才剛接上，還沒聽音樂就皺了眉頭，可是等我放了音樂，那電氣底噪就消失無蹤了，本來我以為電氣底噪會影響聽感，實際上卻一點也不影響，但是在THA 2這個等級的耳擴上面，可以聽到這些許底噪，倒是讓我相當意外。
 >
 > — [U-Audio 評論](https://review.u-audio.com.tw/reviewdetail.asp?reviewid=1111)
 
-Here is the schematic, notice output protection is omitted, and output stage is dual parallel:
+The schematic is shown below. Notice that output protection is omitted and that the output stage uses two parallel transistor pairs.
 
 ![Goldmund Telos Schematic](images/Goldmund_Telos.svg)
 
@@ -96,9 +120,9 @@ The McIntosh MHA150 was launched in 2016 at US$4,500. Although marketed primaril
 
 ![McIntosh MHA-150 Schematic](images/McIntosh%20MHA-150.svg)
 
-The schematic is generally the same as entry-level McIntosh Integrated Amplifiers MA6300, But 1 less output transistor pair, and 50W less output power. It use a complementary double input differential pair and so a push-pull VAS stage.
+The schematic is similar to the entry-level McIntosh MA6300 Integrated Amplifier, But one fewer pair of output transistor, and 50W less output power. It uses a complementary differential input pairs followed by a push-pull voltage-amplification stage.
 
-For ease of understanding, the lower half is dropped, the circuit is simplified as follows:
+For clarity, the lower half has been omitted, giving a simplified circuit below:
 
 ![McIntosh MHA-150 Half](images/McIntosh%20MHA-150_Half.svg)
 
@@ -106,4 +130,4 @@ At first glance, the circuit may appear to be a traditional three-stage amplifie
 
 ## The Kuroda Discrete OP-AMP
 
-This is Discrete op-amp design introduced in Chapter 4 of his book "解析 OPアンプ&トランジスタ活用" {{#cite kuroda2015opamp}} , but this book is never translated into english. However it is very elegant design, it can use as a headphone amplifer if given greater output capability.
+This is Discrete op-amp design introduced in Chapter 4 of his book "解析 OPアンプ&トランジスタ活用" {{#cite kuroda2015opamp}} , but this book is never translated into English. Nevertheless, the circuit is an elegant design, with greater output-current capability, could be adapted for use as a headphone amplifier.

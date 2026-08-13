@@ -6,9 +6,9 @@ Hybrid amplifiers can be classified by device arrangement across stages, such as
 
 ![Rudistor RP8K-VT](images/Rudistor_RP8K-VT-front.png)
 
-The Rudistor RP7 is a boutique hybrid headphone amplifier by Italian designer Rudi Stor. Community discussions often describe the RP7 having a warm-leaning presentation and strong pairing with classic high-impedance headphones such as the HD600, HD650, K501, and K601. Some users have complained about build quality and high pricing. Sadly, after the COVID-19 pandemic around 2020, Mr. Rudi lost contact with the Hi-Fi community.
-
-The follow-up models RP8, RP9 have almost the same schematic with merely some component changes.
+The Rudistor RP7 is a boutique hybrid headphone amplifier by Italian designer Rudi Stor. The follow-up models RP8, RP9, RP8K-VT have almost the same schematic with merely some component changes.
+ 
+ Community discussions often describe the RP7 having a warm-leaning presentation and strong pairing with classic high-impedance headphones such as the HD600, HD650, K501, and K601. Some users have complained about build quality and high pricing. Sadly, after the COVID-19 pandemic around 2020, Mr. Rudi lost contact with the Hi-Fi community.
 
 ![Rudistor RP7](images/Rudistor_RP7.svg)
 

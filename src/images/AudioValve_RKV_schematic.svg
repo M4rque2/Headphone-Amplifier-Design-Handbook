@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" width="1474" height="1004" viewBox="46 46 737 502">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" width="1474" height="1004" viewBox="40 40 760 520">
 <path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M2201 1632.92 2223 1640.92 2201 1647.92"/>
 <path transform="matrix(0,.12,.12,0,0,0)" d="M2201 1648.92H2202V1649.92H2201Z"/>
 <path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M2222 1653.92 2223 1656.92V1662.92L2222 1664.92 2221 1665.92 2219 1666.92H2217L2214 1665.92V1664.92L2213 1662.92 2212 1658.92 2210 1655.92 2209 1654.92 2207 1653.92H2205L2203 1654.92 2202 1655.92 2201 1658.92V1663.92L2202 1666.92"/>
@@ -2136,11 +2136,5 @@
 <path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M2274 706.922H2294L2295 707.922 2297 709.922V712.922"/>
 <path transform="matrix(0,.12,.12,0,0,0)" d="M2297 712.922H2298V713.922H2297Z"/>
 <path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M2288 745.922 2277 734.922V723.922H2299V734.922L2288 745.922"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M386 385.922H4571V6531.92H386Z"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M377 968.922H349L353 965.922 356 962.922 357 960.922"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M352 2205.92 351 2206.92 349 2209.92V2216.92L351 2218.92 352 2220.92 355 2221.92H357L361 2220.92 377 2203.92V2221.92"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M4577 2205.92 4576 2206.92 4574 2209.92V2216.92L4576 2218.92 4577 2220.92 4580 2221.92H4582L4586 2220.92 4602 2203.92V2221.92"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M349 3448.92V3466.92L360 3456.92V3461.92L361 3463.92 363 3465.92 365 3466.92H372L375 3465.92 376 3463.92 377 3461.92V3452.92L376 3450.92 375 3448.92"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M4574 3448.92V3466.92L4585 3456.92V3461.92L4586 3463.92 4588 3465.92 4590 3466.92H4597L4600 3465.92 4601 3463.92 4602 3461.92V3452.92L4601 3450.92 4600 3448.92"/>
-<path transform="matrix(0,.12,.12,0,0,0)" stroke-width="3.42" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="#000000" d="M2475 367.922 2477 371.922 2478 372.922 2481 374.922H2485L2487 372.922 2489 371.922 2490 368.922V358.922H2462V367.922L2463 370.922 2465 371.922 2467 372.922H2470L2473 371.922 2474 370.922 2475 367.922V358.922"/>
+
 </svg>

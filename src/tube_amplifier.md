@@ -55,14 +55,16 @@ Yeli (叶立) 8PR is another headphone amplifier designed by Mr. Ye in Beijing, 
 
 ![Yeli 8PR](images/Yeli_8PR.svg)
 
-It features a differential input stage driving a SEPP output stage. The input and output stages inherently generate strong second-harmonic distortion, less third-harmonic distortion, and almost no high-order distortion.
+It features a differential input stage driving a SEPP output stage. The input and output stages inherently generate strong second-harmonic distortion, less third-harmonic distortion, and almost no high-order distortion. C6 bootstraps the R2 so push-pull tubes receive the same input level. AudioValve RKV uses a similiar output topology.
 
 Second-harmonic distortion is canceled in the input stage by the differential topology and in the output stage by the SEPP topology. R5, R6, and the -70 V supply provide high AC resistance while supplying enough DC current, further improving second-harmonic cancellation in the differential input pair.
 
-In this design, the main purpose of the feedback loop is not to reduce distortion, because the intrinsic distortion is already low. Even so, the loop still provides additional distortion reduction. Its primary role is to stabilize output voltage, because a tube SEPP stage behaves more like a current-output stage and its output voltage varies significantly with load. Since headphone impedance can range from 32 ohms to 300 ohms, the output-voltage variation would otherwise be too large, which is unacceptable in a commercial amplifier product.
+In this design, the main purpose of the feedback loop is not to reduce distortion, because the intrinsic distortion is already low, though it still provides additional distortion reduction whatsoever. Its primary role is to stabilize output voltage, because a tube SEPP stage behaves more like a current-output stage and its output voltage varies significantly with load. Since headphone impedance can range from 32 ohms to 600 ohms, the output-voltage variation would otherwise be too large, which is unacceptable in a commercial amplifier product.
 
 Thus, in this meticulous configuration, distortions are either canceled or not generated in the first place, resulting in a distortion level down to 0.001%, which is excellent for an amplifier that does not rely on deep negative feedback.
 
-Here I propose a modern modification of the Yeli 8PR that removes the need for a -70 V power supply by using a BJT constant-current source as its differential tail.
+The 8PR uses NEC 12AU7 as input stage tube and Mullard EL42 as output stage tube in the early version, output tube change to Mullard EL91 in late version. Both EL42 and EL91 are hard to source today, EL84 and EL86 are alternatives for output stage.
+
+Here I propose a modern modification of the Yeli 8PR that removes the need for a -70 V power supply by using a BJT constant-current source as its differential tail. And more powerful output stage use KT88 in triod connection.
 
 ![Yeli 8PR Modern](images/Yeli_8PR_Modern.svg)

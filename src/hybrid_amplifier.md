@@ -76,7 +76,7 @@ Since the input is alway positive, the power supply of the op-amp is not normall
 
 About 3.5 mA flows through R8, producing roughly 136 V of drop, plus D6's 39 V. That biases the upper output tube's grid to about 175 V. In this way the op-amp controls the bias of the tube stage.
 
-For power tube V3B, the input is the difference between grid and cathode, and the cathode is also the output. So the signal driving the grid must include both the normal input plus the output signal. C11 bootstraps R8 and the anode of V3C to provide that function, like the upper power tube arrangement in the Yeli 8PR.
+For power tube V3B, the input is the difference between grid and cathode, and the cathode is also the output. So the signal driving the grid must include both the normal input plus the output signal. C11 bootstraps R8 and the anode of V3C to provide that function, like the arrangement in the Yeli 8PR.
 
 V3C adds about 30 dB of gain, and the effective gain of the output stage depends on load impedance. That makes stability rather marginal, so the designers chose an op-amp with a very large phase margin (45 degrees for the LF351).
 

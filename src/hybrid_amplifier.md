@@ -44,7 +44,7 @@ Second-harmonic distortion dominates both stages. Because the gain and output st
 
 Benefiting from this two distortion cancellation techniques, its measured performance is decent, at around 0.01% distortion as the manufacturer claims, yet it sounds absolutely lovely. It is one of my personal favourites.
 
-## “Simple Sounds Better”
+### Simple Sounds Better
 
 In an interview with *Stereophile*, Nelson Pass famously said {{#cite norton1991simplesoundsbetter}}:
 
@@ -62,20 +62,22 @@ Recall the composite amplifiers introduced in [Chapter 1](composite_amplifier.md
 
 ![AUdioValve RKV](images/AudioValve_RKVII.jpg)
 
-The AudioValve RKV uses an op amp as the gain stage and DC servo, while power tubes are configured in push-pull as the output stage. 
+The AudioValve RKV uses an op-amp as the gain stage and DC servo, while power tubes are configured in push-pull as the output stage. 
 
 ![AudioValve RKV schematic](images/AudioValve_RKV_schematic.svg)
 
-At first glance the configuration looks unusual, but it is effectively a standard non-inverting op amp topology. The tube gain stage (V3C) after the op amp inverts the phase. You can imagine the + and - inputs of the op amp is inverted, so that signal entering the op amp's + input, with feedback returned to the - input as normal.
+The RKV's PCL805 output valves may be unfamiliar: each B9A envelope contains two electrically separate systems, a triode and a pentode. In the schematic, V3C and V4C designate the triode sections, which provide voltage gain and phase inversion; V3B and V4B designate the pentode sections, which form the push-pull power output stage.
 
-The op amp not only sets the gain, it also acts as a DC servo. R2 and R4 establish the push-pull output stage's midpoint. RV2 adjusts the op amp's - input to about 4.35 V, which forces the + input to the same potential; then R1 // R2 bias the output to about 175 V, roughly the midpoint of the 350 V high-voltage supply.
+At first glance the configuration looks unusual, but it is effectively a standard non-inverting op-amp topology. The tube gain stage (V3C) after the op-amp inverts the phase. You can imagine the + and - inputs of the op-amp is inverted, so that signal entering the op-amp's + input, with feedback returned to the - input as normal.
+
+The op-amp not only sets the gain, it also acts as a DC servo. R2 and R4 establish the push-pull output stage's midpoint. RV2 adjusts the op-amp's - input to about 4.35 V, which forces the + input to the same potential; then R1 // R2 bias the output to about 175 V, roughly the midpoint of the 350 V high-voltage supply.
 
 Since the input is alway positive, the power supply of the op-amp is not normally +15V/-15V, but 22V/-8.2V. Zener diode D5 determines the op-amp output dc level. 8.2V zener voltage makes the op-amp output at about 10V, which is approximately the middle point of op-amp's power rail.
 
-About 3.5 mA flows through R8, producing roughly 136 V of drop, plus D6's 39 V. That biases the upper output tube's grid to about 175 V. In this way the op amp controls the bias of the tube stage.
+About 3.5 mA flows through R8, producing roughly 136 V of drop, plus D6's 39 V. That biases the upper output tube's grid to about 175 V. In this way the op-amp controls the bias of the tube stage.
 
 For power tube V3B, the input is the difference between grid and cathode, and the cathode is also the output. So the signal driving the grid must include both the normal input plus the output signal. C11 bootstraps R8 and the anode of V3C to provide that function, like the upper power tube arrangement in the Yeli 8PR.
 
-V3C adds about 30 dB of gain, and the effective gain of the output stage depends on load impedance. That makes stability rather marginal, so the designers chose an op amp with a very large phase margin (45 degrees for the LF351).
+V3C adds about 30 dB of gain, and the effective gain of the output stage depends on load impedance. That makes stability rather marginal, so the designers chose an op-amp with a very large phase margin (45 degrees for the LF351).
 
-V4C inverts the phase of the signal to feed the lower output power tube. The upper and lower parts of the output stage is not strictly symmetrical, for the output is ultimately close-loop controlled by the op amp.
+V4C inverts the phase of the signal to feed the lower output power tube. The upper and lower parts of the output stage is not strictly symmetrical, for the output is ultimately close-loop controlled by the op-amp.

@@ -65,3 +65,81 @@ If the complete schematic gives you a headache, here is a simplified version:
 ![Omicron Headphone Amplifier](images/Omicron_Simplified.svg)
 
 C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; these are the main components of the frequency compensation network.
+
+## Questyle CMA800R
+
+Questyle's original CMA800, and the later CMA800R shown here, brought another high-speed composite approach to headphone amplifiers in the early 2010s. The name stands for **Current Mode Amplifier** (电流模放大器){{#cite wang2017currentanalogamp}}. Questyle specified THD+N of 0.00038% at 1 kHz into 300 ohms, that was excellent figures of its period.
+
+![Questyle CMA800R Front](images/Questyle_CMA800R.jpg)
+
+It is a opamp+buffer design, but the output transistor is not driven by the output of opamp as usual. The output stage is a VCCS(voltage control current source), so voltage gain depends on the load, for load larger than 250 ohms, it adds some gain, so I still classify it as composite amplifier.  
+
+![Questyle CMA800 Current Mode Amplifier](images/Questyle_CMA800.svg)
+
+To better illustrate its operation, I remove the R8 protection resistor, Add voltage/current probe A, B, C, D.
+
+![Corrent Mode Illustrated](images/Questyle_CMA_800_illustrated.svg)
+
+Let the small-signal voltage at the op-amp booster, point A, be \\(V_A\\). Resistor \\(R_9=1.5\ \mathrm{k\Omega}\\) converts this voltage into an op-amp output current \\(I_A\approx\frac{V_A}{R_9}\\).
+
+During the positive half-cycle, this current is drawn through the positive supply pin, \\(Q_2\\), and \\(R_2\\). The \\(Q_4\\)–\\(R_{13}\\) path operates vice versa in the negative half-cycle. 
+
+\\(R_2\\) act as a current-sensing resistor, it converts changes in the op-amp’s supply current into a control voltage at point B. The signal voltage across \\(R_2\\) is approximately 
+
+\\[
+V_B\approx {I_A} {R_2}
+\approx{V_A}\frac{R_2}{R_9}
+\\]
+
+The complementary compound pair \\(Q_1\\)-\\(Q_3\\) makes the signal voltage across emitter resistor \\(R_4\\) approximately equal to the voltage across \\(R_2\\). Therefore \\(I_C\approx\frac{V_B}{R_4}\approx I_A\frac{R_2}{R_4}\\).
+
+Substituting \\(R_2=500\ \Omega\\) and \\(R_4=15\ \Omega\\), the approximate current gain of one half of the output stage is
+
+\\[
+\frac{I_C}{I_A}\approx\frac{500}{15}\approx33.3.
+\\]
+
+Combining this result with \\(I_A\approx V_A/R_9\\) and \\(I_C\approx I_D\\), gives the booster's effective transconductance:
+
+\\[
+g_{m,\mathrm{boost}}
+=\frac{I_D}{V_A}
+\approx\frac{R_2}{R_9R_4}
+=\frac{500}{1500\times15}
+\approx22.2\ \mathrm{mS}.
+\\]
+
+The booster's standalone small-signal voltage transfer is not fixed; it depends on the headphone impedance. It is unity gain when load is about 45\\(\Omega\\):
+
+\\[
+A_{v,\mathrm{boost}}
+\approx g_{m,\mathrm{boost}}R_L
+\approx\frac{R_L}{45\ \Omega}.
+\\]
+
+For example,
+
+\\[
+A_{v,\mathrm{boost}}\approx0.71\quad(R_L=32\ \Omega)
+\\]
+
+\\[
+A_{v,\mathrm{boost}}\approx6.67\quad(R_L=300\ \Omega).
+\\]
+
+These figures describe only the simplified current-booster path. In the complete amplifier, global negative feedback determines the final voltage gain. From \\(R_{10}=2.2\ \mathrm{k\Omega}\\) and \\(R_7=510\ \Omega\\), gives
+
+\\[
+A_{v,\mathrm{CL}}
+\approx1+\frac{R_{10}}{R_7}
+=1+\frac{2200}{510}
+\approx5.31,
+\\]
+
+or
+
+\\[
+20\log_{10}(5.31)\approx14.5\ \mathrm{dB}.
+\\]
+
+Questyle's manual lists a nominal gain of 15.5 dB.

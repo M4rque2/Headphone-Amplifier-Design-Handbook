@@ -4,11 +4,11 @@ There are many great books about designing audio power amplifiers, but I could n
 
 This book intends to bridge the gap between electronics textbooks and real-world commercial products. It includes elegant circuit schematics that are rarely found in textbooks, as well as reverse engineering studies of expensive amplifiers that are published here for the first time.
 
-Through real-world headphone amplifier designs, I will demonstrate the essential techniques and principles, with knowledge emerging naturally from each example.
+Through real-world headphone amplifier designs, I will demonstrate the essential techniques and principles, with knowledge emerging naturally from each example.to fully understand this book, you should know the basics of Circuit Theory, Analog Electronics, and Semiconductor Physics. 
 
-To fully understand this book, you should know the basics of Circuit Theory, Analog Electronics, and Semiconductor Physics. 
+Chapters 1 and 5 deal with composite and discrete amplifier designs that are significantly more technically demanding than the rest of this book. If you find these sections difficult, do not worry, just skip ahead. 
 
-However, even non-technical readers can still benefit from this book. It will help you look past the marketing hype and see the circuitry beneath their expensive products.
+The remaining chapters are independent of one another, you do not have to read them in sequence. And I think even non-technical readers can still benefit from this book. It will help you look past the marketing hype and see the circuitry beneath their expensive products.
 
 Among consumer electronics, Hi-Fi equipment stands out for its abundance of marketing hype coupled with minimal technical explanation. In contrast, other digital products like smartphones have been provided detailed teardowns, technology stacks, and performance benchmarks. Yet Hi-Fi amplifier manufacturers rarely explain their technology—and when they do, they often introduce proprietary terminology designed to obscure rather than clarify.
 

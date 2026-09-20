@@ -2,9 +2,9 @@
 
 Like a story that begins with its ending, we will start this book with the ultimate answer. We will first look at the absolute pinnacle of contemporary audio engineering, the state-of-the-art and best-measuring circuits of the 2020s. If your only goal is to know the "Best Headphone Amplifier" right now, this chapter is all you need. After this, we will travel back in time to explore the older, classic designs that led us here.
 
-Topping calls its design "NFCA" (Nested Feedback Composite Amplifier), but I'll use the audio community's more familiar name: the composite amplifier for the rest of this chapter.
+Topping calls its design "NFCA" (Nested Feedback Composite Amplifier), SMSL calls it "PLFC" (Precision Linear Feedback Circuit), they are basically the same thing. I'll use the audio community's more familiar name: the composite amplifier for the rest of this chapter.
 
-The idea of a composite amplifier is simple: combine two amplifiers so their open-loop gains multiply, enabling deeper feedback. As a result, distortion, bandwidth, noise, and output impedance can all improve. The main concern is oscillation. Each amplifier has its own dominant pole, and each pole adds 90 degrees phase lag. If the total phase lag approaches 180 degrees while loop gain is still above 0 dB, the circuit can oscillate. Therefore, poles and zeros must be configured carefully to keep a composite amplifier stable.
+The idea of a composite amplifier is simple: cascade two amplifiers so their open-loop gains multiply, enabling deeper feedback. As a result, distortion, bandwidth, noise, and output impedance can all improve. The main concern is oscillation. Each amplifier has its own dominant pole, and each pole adds 90 degrees phase lag. If the total phase lag approaches 180 degrees while loop gain is still above 0 dB, the circuit can oscillate. Therefore, poles and zeros must be configured carefully to keep a composite amplifier stable.
 
 ## Topping A90
 

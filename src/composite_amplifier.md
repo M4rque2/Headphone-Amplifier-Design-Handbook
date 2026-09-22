@@ -4,33 +4,57 @@ Like a story that begins with its ending, we will start this book with the ultim
 
 Topping calls its design "NFCA" (Nested Feedback Composite Amplifier), SMSL calls it "PLFC" (Precision Linear Feedback Circuit), they are basically the same thing. I'll use the audio community's more familiar name: the composite amplifier for the rest of this chapter.
 
-The idea of a composite amplifier is simple: cascade two amplifiers so their open-loop gains multiply, enabling deeper feedback. As a result, distortion, bandwidth, noise, and output impedance can all improve. The main concern is oscillation. Each amplifier has its own dominant pole, and each pole adds 90 degrees phase lag. If the total phase lag approaches 180 degrees while loop gain is still above 0 dB, the circuit can oscillate. Therefore, poles and zeros must be configured carefully to keep a composite amplifier stable.
+The idea of a composite amplifier is simple: cascade two amplifiers so their open-loop gains multiply, enabling deeper feedback. As a result, distortion, bandwidth, noise, and output impedance can all improve. 
+
+The chanllege is to keep the feedback loop stable, because each amplifier has its own dominant pole, and each pole adds 90 degrees phase lag. If the total phase lag approaches 180 degrees while loop gain is still above 0 dB, the circuit can oscillate. Therefore, poles and zeros must be configured carefully to keep a composite amplifier stable.
 
 ## Topping A90
 
-The simplest way to build a composite amplifier is to use a slow amp to drive a fast amp. This configuration is inherently stable because the slow amp's gain drops below 0 dB before the fast amp introduces significant phase shift. 
-
-To explain this non-technically, imagine the relationship between a driver (the first amp) and a vehicle (the second amp). If you pilot a massive vehicle that reacts seconds after you turn the wheel, steering a straight path becomes difficult. Constant over-correction and swerving are the mechanical equivalent of an amplifier oscillating. Conversely, if the vehicle responds faster than the driver's reflexes, the driver perceives little delay and does not over-correct. That behavior is analogous to a stable amplifier.
-
-A more detailed explanation can be found in "Composite Amplifiers: High Output Drive Capability with Precision" by Jino Loquinario from ADI {{#cite jino2019compositeampadi}}.
-
-The Topping A90 was launched in 2020 at US$499. Although it was not the first Chinese headphone amplifier to achieve excellent measurements, it became a landmark product by combining extremely low noise and distortion with high output power at a relatively affordable price. Its fully balanced NFCA circuitry delivers up to 7.6 W into 16 ohms, with a specified dynamic range of 145 dB and THD below 0.00007%. Reviewers praised its transparent, neutral sound and ability to drive everything from sensitive IEMs to demanding planar headphones, although some found its presentation somewhat sterile or lacking soundstage depth.
+The Topping A90 was launched in May 2020 at US$499. It joined a measurement-driven wave of headphone amplifiers whose notable milestones included NwAvGuy’s Objective2 in 2011, the Massdrop THX AAA 789 and JDS Labs Atom in 2018, and the SMSL SP200 in 2019. These products made low noise, low distortion, and competitive pricing central to their appeal. The A90 became a landmark within this movement by combining exceptionally low noise and distortion with high output power and balanced connectivity at a relatively accessible price.
 
 ![Topping A90](images/Topping_A90.jpg)
-
-The Topping A90 is the "slow-driver / fast-output" composite amplifier I described above: an OPA1612 drives two TPA6120A2. The OPA1612 has about 40 MHz gain-bandwidth product (GBW); though TI does not explicitly list GBW for TPA6120A2, I know it is basically THS6012 which has about 300MHz GBW.
-
-Usually we do not factor the output stage's phase and gain variations into the amplifier's global stability analysis, treating it as if it were an ideal unity-gain buffer — one with infinite bandwidth that introduces no phase shift. This is, of course, not true. The output stage does generate phase shift, at a frequency set by the parasitic capacitance contributed by the headphone coil and its lead wires.
-
-The second amplifier is a current-feedback amplifier, configured at unity gain and its gain and feedback only correct its own local errors. It is therefore convenient to treat it as an ordinary output stage. As long as its GBW is much larger than the first amplifier.
 
 The topology is shown below.
 
 ![Topping A90 Schematic](images/Topping_A90.svg)
 
-The non-inverting amp drives the headphone's positive phase directly, and also feeds the inverting amp, whose output drives the negative phase. Some audiophiles may be bothered since such an architecture is pseudo-balanced. A zobel network is placed at the output. And C1 and C2 together form a 1st order low-pass filter to better stabilize the amp.
+The A90 combines an precision op-amp(OPA1612) drives two fast high-current op-amp(TPA6120A2) in parallel as output stage. 
 
-The successor model, A90 Discrete, keeps the same core topology: a voltage-feedback op-amp driving a current-feedback op-amp, both implemented in discrete components. I may add its schematic in a later version of this book.
+The output stage set at unity voltage gain and can be treated as a fast buffer. TI specifies a typical small-signal bandwidth of 100 MHz for the THS6012 at unity gain, with a 1 kΩ feedback resistor, at 25 Ω load. If the global feedback loop crosses unity gain well below the output stage’s bandwidth, the output stage contributes relatively little additional phase lag at crossover, making the composite amplifier easier to stabilize.
+
+![THS6012 output stage Gain Phase](images/THS6012_Gain_Phase.svg)
+
+OPA1612's GBW is 40Mhz, well below the 100Mhz bandwidth of the output stage, it should theoretically makes the amp stable. C67 and C70 provide additional high-frequency compensate, improve phase margin and make stability less sensitive to loading and parasitic effects. 
+
+If we approximate the TPA6120A2 output stage as an ideal unity-gain wire, the circuit can be simplified as:
+
+![OPA1612 drive stage](images/Topping_A90_OPA1612.svg)
+
+In this simplified circuit, \\(C_2\\) is in parallel with \\(R_3\\). This combination is in series with \\(C_1\\), and the whole branch is in parallel with \\(R_2\\). The feedback impedance is therefore
+
+\\[
+Z_f(s)=R_2\parallel
+\left[
+\frac{1}{sC_1}
++\left(R_3\parallel\frac{1}{sC_2}\right)
+\right].
+\\]
+
+Here, \\(s=\sigma+j\omega\\) is the complex frequency variable used in the Laplace transform. For sinusoidal frequency-response analysis, set \\(\omega=2\pi f\\) , \\(j=\sqrt{-1}\\), and \\(\parallel\\) denotes impedances connected in parallel.
+
+The simulated gain phase plot of OPA1612:
+
+![OPA1612 drive stage Gain Phase](images/OPA1612_Gain_Phase.svg)
+
+Let a slower drive stage controls a faster output stage, is one of the common approachs to make a compsite amplifier. The Topping A90 is this kind of composite amplifier. 
+
+Imagine steering a boat that responds slowly. If you make another correction before the boat has reacted to the first, you can overcorrect and start zigzagging. Making corrections more slowly helps keep it on course. A boat that responds quickly is easier to steer. Similarly, an amplifier is easier to keep stable when its output stage responds much faster than the feedback loop tries to correct it.
+
+A more detailed techinical explanation can be found in "Composite Amplifiers: High Output Drive Capability with Precision" by Jino Loquinario from ADI {{#cite jino2019compositeampadi}}.
+<!-- 
+Some audiophiles may be bothered since it is pseudo-balanced, the inverting output is generated from non-inverting output, Bryston BHA-1 and many other Hi-Fi amplifiers have implemented such topology too.
+-->
+The successor model, A90 Discrete, keeps the same core topology: a voltage-feedback op-amp driving a fast current-feedback op-amp, both implemented in discrete components.
 
 ## Turbocharged Audio Amplifier
 
@@ -40,15 +64,17 @@ In the Topping A90, the second amplifier is set at unity gain, so its local nega
 
 More open-loop gain allows deeper negative feedback, reducing the distortion of the amplifier from 0.02% (LM1875 alone) to 0.005% (AD711 + LM1875 composite).
 
-![Turbocharged Phase Leading Network](images/Turbocharged_Phase_Leading_Network.svg)
+![Turbocharged Phase Leading Network](images/LM1875_Phase_Lead_Network.svg)
 
-A phase-lead network consisting of R1, R2, and C1 helps improve phase margin; otherwise, the amplifier will oscillate. As the transfer function shows, it creates a zero at \\(f_z = \frac{1}{2\pi R_1 C_1}\\), about 400 kHz, and a higher-frequency pole at \\(f_p = \frac{1}{2\pi (R_1 \parallel R_2) C_1}\\), about 20 MHz. This provides enough phase margin at the 0 dB gain crossover.
+A phase-lead network is another approach to build a composite amplifier. 
+
+In this exmample, R1, R2, and C1 form a phase-lead network, it helps improve phase margin, otherwise the amplifier will oscillate. As the transfer curve shows, it creates a zero at \\(f_z = \frac{1}{2\pi R_1 C_1}\\), about 400 kHz, and a higher-frequency pole at \\(f_p = \frac{1}{2\pi (R_1 \parallel R_2) C_1}\\), about 20 MHz. This provides enough phase margin at the 0 dB gain crossover. Finally the close-loop gain and phase shown as below:
 
 ![Turbocharged Amplifier Bode Analysis](images/Turbocharged_Bode.svg)
 
 ## Omicron Headphone Amplifier
 
-In the "Turbocharged Audio Amplifier", about 30 dB of gain is sacrificed in the phase-leading network as the price of phase compensation. If you want more gain available for global feedback, the Omicron amplifier by Alexcp from diyaudio is built this way.
+In the "Turbocharged Audio Amplifier", about 30 dB of gain is sacrificed in the phase-leading network as the price of phase compensation. If you want more gain available for global feedback, the Omicron amplifier by Alexcp from diyaudio is built this way. It implements a dual-pole compensate.
 
 ![Omicron Headphone Amplifier](images/Omicron_Headphone_Amplifier.svg)
 

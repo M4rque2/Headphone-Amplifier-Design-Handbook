@@ -92,6 +92,33 @@ If the complete schematic gives you a headache, here is a simplified version:
 
 C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; these are the main components of the frequency compensation network.
 
+## THX AAA 789
+![THX AAA 789 Front](images/THX_AAA_789_Front.jpg)
+
+The Massdrop × THX AAA 789 was launched in 2018 at US$349.99. Developed jointly by Massdrop and THX and sold through Massdrop, it became a landmark by combining high output power with exceptionally low distortion at an accessible price. THX specified up to 6 W per channel into 32 ohms through its bridged output, and THD as low as 0.00001% at 100 mW into 300 ohms. It provided a prominent showcase for THX’s Achromatic Audio Amplifier technology, which uses feed-forward error correction to reduce distortion. The same technology family also appeared in Benchmark’s HPA4, SMSL’s SP200 and SP400, and products from FiiO.
+
+Feed-forward error correction technology has a long history to tell. Harold S. Black, working at Bell Telephone Laboratories in the late 1920s, developed both negative-feedback and feed-forward error-correction concepts. In a feed-forward system, the error produced by a main amplifier is extracted, amplified separately, and then injected into the output with opposite polarity so that the distortion is cancelled rather than reduced. 
+
+QUAD adapted this principle to audio power amplification in the 1970s. Peter Walker and Michael Albinson introduced the term current dumping for an architecture in which a small, highly linear amplifier controls the output voltage while a much more powerful Class-B output stage supplies most of the load current. This approach became the basis of the QUAD 405 amplifier. 
+
+The later THX low-dissipation amplifier patent applies a related feed-forward error-correction concept to a topology that avoids the balancing inductor used in the QUAD approach. The Schematic of THX AAA 789 is shown as below:
+
+![THX AAA Schematics](images/THX_AAA_789.svg)
+
+The original design use OPA1602 and OPA564, but I don't have model of OPA1602, so I use the combination of Topping A90, which makes these two topology comparable. It is complecated desing, to understand this, we have to start from beginning.
+
+![Current Dumping Parallel](images/Current_Dumping_Parallel.svg)
+
+If we paralleing a precision op-amp as error-correction amp and a high-current op-amp as power amp, with different output resistor, certainly the output current will allocated by the raio of R1/R3, in our case it is 1/100.
+
+If the power amp contribute some error/distorion, the error-correction amp can help fix it, but it needs a way to sense that error. We need to understand wheatstone bridge first. In a wheatstone bridge, whatever voltage signal applied, the voltage of Point A and B will be identical.
+
+![Wheatstone Bridge](images/Wheatstone_Bridge.svg)
+
+That is how we pick up feedback signal. Point A is the output voltage to load and Point B is the voltage feedback to the error-correction amp. 
+
+![THX AAA in wheatstone bridge](images/THX_AAA_Wheatstone_Bridge.svg)
+
 ## Questyle CMA800R
 
 Questyle's original CMA800, and the later CMA800R shown here, brought another high-speed composite approach to headphone amplifiers in the early 2010s. The name stands for **Current Mode Amplifier** (电流模放大器){{#cite wang2017currentanalogamp}}. Questyle specified THD+N of 0.00038% at 1 kHz into 300 ohms, that was excellent figures of its period.

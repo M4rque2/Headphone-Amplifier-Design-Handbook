@@ -101,23 +101,190 @@ Feed-forward error correction technology has a long history to tell. Harold S. B
 
 QUAD adapted this principle to audio power amplification in the 1970s. Peter Walker and Michael Albinson introduced the term current dumping for an architecture in which a small, highly linear amplifier controls the output voltage while a much more powerful Class-B output stage supplies most of the load current. This approach became the basis of the QUAD 405 amplifier. 
 
-The later THX low-dissipation amplifier patent applies a related feed-forward error-correction concept to a topology that avoids the balancing inductor used in the QUAD approach. The Schematic of THX AAA 789 is shown as below:
+THX patented a feed-forward error-correction concept that avoids the balancing inductor used in the QUAD approach. The Schematic of THX patent is shown as below, it is probably also the schematic of THX AAA 789 headphone amplifier:
 
 ![THX AAA Schematics](images/THX_AAA_789.svg)
 
-The original design use OPA1602 and OPA564, but I don't have model of OPA1602, so I use the combination of Topping A90, which makes these two topology comparable. It is complecated desing, to understand this, we have to start from beginning.
+The original design use OPA1602 and OPA564, but I don't have the models of both, so I use the combination of Topping A90, which makes these two topology comparable. The concept is complicated, to understand that, we have to start from the beginning.
+
+### Current Dumping Concept
 
 ![Current Dumping Parallel](images/Current_Dumping_Parallel.svg)
 
-If we paralleing a precision op-amp as error-correction amp and a high-current op-amp as power amp, with different output resistor, certainly the output current will allocated by the raio of R1/R3, in our case it is 1/100.
+If we parallel a precision op-amp as error-correction amp and a high-current op-amp as power amp, with different output resistors, the output current will be allocated by the raio of R1/R3, in our case 1/100.
 
 If the power amp contribute some error/distorion, the error-correction amp can help fix it, but it needs a way to sense that error. We need to understand wheatstone bridge first. In a wheatstone bridge, whatever voltage signal applied, the voltage of Point A and B will be identical.
 
+#### Wheatstone Bridge
+
 ![Wheatstone Bridge](images/Wheatstone_Bridge.svg)
 
-That is how we pick up feedback signal. Point A is the output voltage to load and Point B is the voltage feedback to the error-correction amp. 
+If we use point A as output, use point B as feedback, this is a wheatstone style current dumping amplifier. 
 
-![THX AAA in wheatstone bridge](images/THX_AAA_Wheatstone_Bridge.svg)
+![THX AAA Circuit in wheatstone bridge](images/THX_AAA_Wheatstone_Bridge.svg)
+
+#### Wien Bridge
+
+If we use a inductor to replace R1, and a capacitor to replace R2, the bridge is still balance, though the dividing ratio will change over frequency. It is called Maxwell Wien bridge, and Quad 405 used such bridge.
+
+![Maxwell Wien Bridge](images/Wien_Bridge.svg)
+
+Unlike a Wheatstone bridge made only from resistors, a Maxwell-Wien bridge contains reactive components, so we describe each bridge arm by its impedance \\(Z(s)\\), rather than by a resistance alone. For sinusoidal analysis, \\(s=j\omega\\), where \\(\omega=2\pi f\\).
+
+The impedances of an ideal inductor and capacitor are
+
+\\[
+Z_L=sL,\qquad Z_C=\frac{1}{sC}.
+\\]
+
+The bridge-balance condition itself does not change.
+
+\\[
+Z_1Z_2=Z_3Z_4.
+\\]
+
+\\(R_1\\) is replaced by an inductor and \\(R_2\\) by a capacitor, while \\(R_3\\) and \\(R_4\\) remain resistive. Therefore,
+
+\\[
+Z_1=sL,\qquad
+Z_2=\frac{1}{sC},\qquad
+Z_3=R_3,\qquad
+Z_4=R_4.
+\\]
+
+Substituting these impedances into the balance condition gives
+
+\\[
+(sL)\left(\frac{1}{sC}\right)=R_3R_4.
+\\]
+
+The \\(s\\) terms cancel, leaving
+
+\\[
+\frac{L}{C}=R_3R_4.
+\\]
+
+In our example
+
+\\[
+R_3=22\ \Omega,\qquad R_4=1\ \mathrm{k\Omega},
+\\]
+
+then
+
+\\[
+R_3R_4=22\times1000=22\,000\ \Omega^2.
+\\]
+
+Choosing standard component values
+
+\\[
+L=3.3\ \mu\mathrm{H},\qquad C=150\ \mathrm{pF}
+\\]
+
+gives
+
+\\[
+\frac{L}{C}
+=\frac{3.3\times10^{-6}}{150\times10^{-12}}
+=22\,000\ \Omega^2,
+\\]
+
+so the bridge is ideally balanced. The two voltage-division ratios change together, keeping the voltage difference between points A and B at zero under the bridge-balance condition. 
+
+L1 as output indcutor isolates load capacitance, C1 as feedback compensate capacitor stables the error correction amplifier, this is a very convenient way to build a speaker amplifier. 
+
+However accurate bridge balance is critical to distortion cancellation in a current-dumping amplifier. Matching inductor, capacitor and resistors are much harder than matching 4 resistors alone, consider their tolerance and parasitic effects.
+
+#### THX Patent's Bridge
+
+In headphone amplifier desing, if we want to keep the compensate capacitor while drop the inductor. THX giving a new bridge style in its patent: US8004355B2, Low dissipation amplifier. 
+
+![THX AAA Patent Bridge](images/THX_AAA_Bridge.svg)
+
+In this RC bridge, using the same arm numbering as before, their impedances are
+
+\\[
+Z_1=R_1 \qquad Z_2=\frac{1}{sC_2}
+\\]
+
+\\[
+Z_3=R_3\parallel\frac{1}{sC_1}
+=\frac{R_3}{1+sR_3C_1}
+\\]
+
+\\[
+Z_4=R_4+\frac{1}{sC_4}
+=\frac{1+sR_4C_4}{sC_4}
+\\]
+
+The bridge is balanced when the voltages at points A and B are equal. The balance condition remains
+
+\\[
+Z_1Z_2=Z_3Z_4.
+\\]
+
+Substituting the four impedances gives
+
+\\[
+\frac{R_1}{sC_2} = \frac{R_3}{1+sR_3C_1} \cdot \frac{1+sR_4C_4}{sC_4}.
+\\]
+
+Rearranging,
+
+\\[
+R_1C_4(1+sR_3C_1) = R_3C_2(1+sR_4C_4)
+\\]
+
+For this equality to hold across frequency, both the constant terms and the coefficients of \\(s\\) must match. This gives two conditions:
+
+\\[
+R_1C_4=R_3C_2
+\\]
+
+and
+
+\\[
+R_3C_1=R_4C_4.
+\\]
+
+The second condition means that the parallel RC network and the series RC network must have the same time constant. When these time constants match, their frequency-dependent factors cancel, leaving
+
+\\[
+\frac{R_1}{C_2}=\frac{R_3}{C_4}.
+\\]
+
+For the values shown in the diagram, the time constants are
+
+\\[
+R_3C_1
+\=22\times100\times10^{-9}
+\=2.2\ \mu\mathrm{s}
+\\]
+
+and
+
+\\[
+R_4C_4
+=1000\times2.2\times10^{-9}
+=2.2\ \mu\mathrm{s}.
+\\]
+
+The remaining balance condition is also satisfied:
+
+\\[
+\frac{R_1}{C_2}
+\ =
+\frac{0.22}{22\times10^{-12}}
+\ =
+\frac{22}{2.2\times10^{-9}}
+\ =
+\frac{R_3}{C_4}.
+\\]
+
+Therefore, the bridge is ideally balanced. Although the voltage-division ratios change with frequency, they change together, keeping points A and B at the same voltage. 
+
+But there is not DC feedback path.
 
 ## Questyle CMA800R
 

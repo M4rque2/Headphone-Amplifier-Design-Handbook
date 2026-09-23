@@ -58,7 +58,7 @@ The successor model, A90 Discrete, keeps the same core topology: a voltage-feedb
 
 ## Turbocharged Audio Amplifier
 
-In the Topping A90, the second amplifier is set at unity gain, so its local negative feedback mainly corrects its own distortion. If you want the second stage's gain to participate in global feedback, a classic example is the LM1875-based "Turbocharged Audio Amplifier" proposed by Kitchin et al. {{#cite kitchin1992turbocharged}}. It was designed as a power amplifier, but it can also work with headphones because the composite design effectively improves the LM1875's noise floor.
+In the Topping A90, the second amplifier is set at unity gain, so its local negative feedback mainly corrects its own distortion. The two amplifier's gain is not multiplied, If you want the second stage's gain to participate in global feedback, a classic example is the LM1875-based "Turbocharged Audio Amplifier" proposed by Kitchin et al. {{#cite kitchin1992turbocharged}}. It was designed as a power amplifier, but it can also work with headphones because the composite design effectively improves the LM1875's noise floor.
 
 ![Turbocharged Audio Amplifier](images/Turbocharged_LM1875.svg)
 
@@ -82,7 +82,7 @@ It is a sophisticated amplifier consisting of two gain stages and a Class A outp
 
 ![Omicron Amplifier Bode Analysis](images/Omicron_Bode.svg)
 
-From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase changes sharply around this frequency and drops below -180 degrees at higher frequencies, indicating a strong tendency toward oscillation. The phase recovers at about 1 MHz. Finally, some phase margin is preserved at the 0 dB gain crossover. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from potential oscillation.
+From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase changes sharply around this frequency and drops below -180 degrees at higher frequencies, indicating a strong tendency toward oscillation. The phase recovers at about 1 MHz. Finally, some phase margin is preserved at the 0 dB gain crossover. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from clipping.
 
 To be honest, I do not fully understand why this works; however, many members of the diyaudio community have built this amplifier, so there is no doubt that it works in practice.
 
@@ -103,7 +103,7 @@ QUAD adapted this principle to audio power amplification in the 1970s. Peter Wal
 
 THX patented a feed-forward error-correction concept that avoids the balancing inductor used in the QUAD approach. The Schematic of THX patent is shown as below, it is probably also the schematic of THX AAA 789 headphone amplifier:
 
-![THX AAA Schematics](images/THX_AAA_789.svg)
+![THX AAA Schematics](images/THX_AAA_789_concept.svg)
 
 The original design use OPA1602 and OPA564, but I don't have the models of both, so I use the combination of Topping A90, which makes these two topology comparable. The concept is complicated, to understand that, we have to start from the beginning.
 
@@ -113,7 +113,7 @@ The original design use OPA1602 and OPA564, but I don't have the models of both,
 
 If we parallel a precision op-amp as error-correction amp and a high-current op-amp as power amp, with different output resistors, the output current will be allocated by the raio of R1/R3, in our case 1/100.
 
-If the power amp contribute some error/distorion, the error-correction amp can help fix it, but it needs a way to sense that error. We need to understand wheatstone bridge first. In a wheatstone bridge, whatever voltage signal applied, the voltage of Point A and B will be identical.
+If the power amp contribute some error/distorion, the error-correction amp can help fix it, but it needs a way to sense that error. We need to understand wheatstone bridge first. In a balanced wheatstone bridge, whatever voltage signal applied, the voltage of Point A and B will be identical.
 
 #### Wheatstone Bridge
 
@@ -134,52 +134,52 @@ Unlike a Wheatstone bridge made only from resistors, a Maxwell-Wien bridge conta
 The impedances of an ideal inductor and capacitor are
 
 \\[
-Z_L=sL,\qquad Z_C=\frac{1}{sC}.
+Z_L=sL \qquad Z_C=\frac{1}{sC}
 \\]
 
 The bridge-balance condition itself does not change.
 
 \\[
-Z_1Z_2=Z_3Z_4.
+Z_1Z_2=Z_3Z_4
 \\]
 
 \\(R_1\\) is replaced by an inductor and \\(R_2\\) by a capacitor, while \\(R_3\\) and \\(R_4\\) remain resistive. Therefore,
 
 \\[
-Z_1=sL,\qquad
-Z_2=\frac{1}{sC},\qquad
-Z_3=R_3,\qquad
-Z_4=R_4.
+Z_1=sL \qquad
+Z_2=\frac{1}{sC} \qquad
+Z_3=R_3 \qquad
+Z_4=R_4
 \\]
 
 Substituting these impedances into the balance condition gives
 
 \\[
-(sL)\left(\frac{1}{sC}\right)=R_3R_4.
+(sL)\left(\frac{1}{sC}\right)=R_3R_4
 \\]
 
 The \\(s\\) terms cancel, leaving
 
 \\[
-\frac{L}{C}=R_3R_4.
+\frac{L}{C}=R_3R_4
 \\]
 
 In our example
 
 \\[
-R_3=22\ \Omega,\qquad R_4=1\ \mathrm{k\Omega},
+R_3=22\ \Omega \qquad R_4=1\ \mathrm{k\Omega}
 \\]
 
 then
 
 \\[
-R_3R_4=22\times1000=22\,000\ \Omega^2.
+R_3R_4=22\times1000=22\,000\ \Omega^2 
 \\]
 
 Choosing standard component values
 
 \\[
-L=3.3\ \mu\mathrm{H},\qquad C=150\ \mathrm{pF}
+L=3.3\ \mu\mathrm{H} \qquad C=150\ \mathrm{pF}
 \\]
 
 gives
@@ -187,7 +187,7 @@ gives
 \\[
 \frac{L}{C}
 =\frac{3.3\times10^{-6}}{150\times10^{-12}}
-=22\,000\ \Omega^2,
+=22\,000\ \Omega^2
 \\]
 
 so the bridge is ideally balanced. The two voltage-division ratios change together, keeping the voltage difference between points A and B at zero under the bridge-balance condition. 
@@ -221,13 +221,13 @@ Z_4=R_4+\frac{1}{sC_4}
 The bridge is balanced when the voltages at points A and B are equal. The balance condition remains
 
 \\[
-Z_1Z_2=Z_3Z_4.
+Z_1Z_2=Z_3Z_4
 \\]
 
 Substituting the four impedances gives
 
 \\[
-\frac{R_1}{sC_2} = \frac{R_3}{1+sR_3C_1} \cdot \frac{1+sR_4C_4}{sC_4}.
+\frac{R_1}{sC_2} = \frac{R_3}{1+sR_3C_1} \cdot \frac{1+sR_4C_4}{sC_4}
 \\]
 
 Rearranging,
@@ -245,21 +245,15 @@ R_1C_4=R_3C_2
 and
 
 \\[
-R_3C_1=R_4C_4.
+R_3C_1=R_4C_4
 \\]
 
-The second condition means that the parallel RC network and the series RC network must have the same time constant. When these time constants match, their frequency-dependent factors cancel, leaving
-
-\\[
-\frac{R_1}{C_2}=\frac{R_3}{C_4}.
-\\]
+The second condition means that the parallel RC network and the series RC network must have the same time constant. When these time constants match, their frequency-dependent factors cancel.
 
 For the values shown in the diagram, the time constants are
 
 \\[
-R_3C_1
-\=22\times100\times10^{-9}
-\=2.2\ \mu\mathrm{s}
+R_3C_1=22\times100\times10^{-9}=2.2\ \mu\mathrm{s}
 \\]
 
 and
@@ -270,25 +264,96 @@ R_4C_4
 =2.2\ \mu\mathrm{s}.
 \\]
 
-The remaining balance condition is also satisfied:
-
-\\[
-\frac{R_1}{C_2}
-\ =
-\frac{0.22}{22\times10^{-12}}
-\ =
-\frac{22}{2.2\times10^{-9}}
-\ =
-\frac{R_3}{C_4}.
-\\]
-
 Therefore, the bridge is ideally balanced. Although the voltage-division ratios change with frequency, they change together, keeping points A and B at the same voltage. 
 
-But there is not DC feedback path.
+But this amplifier need a DC feedback path to stable its opeartion point. For unity gain setting, add a feedback resistor between 1K~10K. If you want some gain, note Z4 is a high pass filter, so the feedback network need to be a low pass filter to flat the response.
+
+
+![THX AAA Schematics](images/THX_AAA_789.svg)
+
+Using the component labels from our simulation, \\(R_2\\) , \\(R_5\\), and \\(C_3\\) form a low-pass filter. Resistor \\(R_7\\) connects the inverting input to ground. 
+
+For the following calculation, we assume sufficient amplifier loop gain and neglect the small voltage drop across \\(R_1\\) and the contribution of \\(C_2\\) around the RC transition. 
+
+At DC, the capacitors are open, and \\(R_2\\) and \\(R_5\\) form a series feedback resistance. The closed-loop gain is approximately
+
+\\[
+G_{\mathrm{DC}}\approx1+\frac{R_2+R_5}{R_7}.
+\\]
+
+
+\\[
+G_{\mathrm{DC}}\approx1+\frac{1000+1000}{1000}=3.
+\\]
+
+Above the RC transition, \\(C_3\\) increasingly holds the midpoint near AC ground, so \\(R_5\\) acts in parallel with \\(R_7\\). Meanwhile, the impedance of \\(C_4\\) becomes small compared with \\(R_4\\). Before other high-frequency effects become significant, the gain therefore approaches
+
+\\[
+G_{\mathrm{upper}}\approx1+\frac{R_4}{R_7\parallel R_5}.
+\\]
+
+To match the lower and upper gains, we require
+
+\\[
+\frac{R_2+R_5}{R_7}=\frac{R_4}{R_7\parallel R_5},
+\\]
+
+or
+
+\\[
+R_4=\frac{R_5(R_2+R_5)}{R_7+R_5}.
+\\]
+
+Our values satisfy this condition:
+
+\\[
+R_4=\frac{1000(1000+1000)}{1000+1000}=1\ \mathrm{k\Omega},
+\\]
+
+giving
+
+\\[
+G_{\mathrm{upper}}\approx1+\frac{1000}{500}=3.
+\\]
+
+Matching the gains is not enough; the transition frequencies must also match. In this simplified model, the T-network time constant is \\((R_2\parallel R_5)C_3\\), so we choose
+
+\\[
+(R_2\parallel R_5)C_3=R_4C_4=R_3C_1.
+\\]
+
+The bridge time constant is
+
+\\[
+R_4C_4=1000\times2.2\times10^{-9}=2.2\ \mu\mathrm{s},
+\\]
+
+corresponding to
+
+\\[
+f_b=\frac{1}{2\pi R_4C_4}\approx72.3\ \mathrm{kHz}.
+\\]
+
+Therefore,
+
+\\[
+C_3=\frac{R_4C_4}{R_2\parallel R_5}
+=\frac{2.2\times10^{-6}}{500}
+=4.4\ \mathrm{nF}.
+\\]
+
+
+For unity gain, omit both \\(R_7\\) and \\(C_3\\), keeping the resistive feedback path from the final output. The two feedback resistors then act as one:
+
+\\[
+R_F=R_2+R_5=2\ \mathrm{k\Omega}.
+\\]
 
 ## Questyle CMA800R
 
-Questyle's original CMA800, and the later CMA800R shown here, brought another high-speed composite approach to headphone amplifiers in the early 2010s. The name stands for **Current Mode Amplifier** (电流模放大器){{#cite wang2017currentanalogamp}}. Questyle specified THD+N of 0.00038% at 1 kHz into 300 ohms, that was excellent figures of its period.
+Questyle's original CMA800 brought another high-speed composite approach to headphone amplifiers in the early 2010s. The name stands for **Current Mode Amplifier** (电流模放大器){{#cite wang2017currentanalogamp}}. Questyle specified THD+N of 0.00038% at 1 kHz into 300 ohms, that was excellent figures of its period.
+
+I am hasitated to classify it as composite amp or op-amp + buffer topology, however its output stage add extra gain, so I put it here as composite amplifier.
 
 ![Questyle CMA800R Front](images/Questyle_CMA800R.jpg)
 

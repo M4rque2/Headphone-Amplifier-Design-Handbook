@@ -84,13 +84,65 @@ It is a sophisticated amplifier consisting of two gain stages and a Class A outp
 
 From the Bode plot, we can see a peak in the gain curve at about 17 kHz, and the phase changes sharply around this frequency and drops below -180 degrees at higher frequencies, indicating a strong tendency toward oscillation. The phase recovers at about 1 MHz. Finally, some phase margin is preserved at the 0 dB gain crossover. Therefore, D3-D6 form a protection circuit that helps the amplifier recover from clipping.
 
-To be honest, I do not fully understand why this works; however, many members of the diyaudio community have built this amplifier, so there is no doubt that it works in practice.
-
 If the complete schematic gives you a headache, here is a simplified version:
 
 ![Omicron Headphone Amplifier](images/Omicron_Simplified.svg)
 
-C1/C2 and R3/R4 form a two-pole compensating feedback network that helps recover phase margin; these are the main components of the frequency compensation network.
+C1, C2, R3, and R4 form a frequency-dependent local negative-feedback network around U2A. At low frequencies, the capacitors have high impedances, the gain of the composite is approximately the product of the open-loop gains of U2B and U2A. This provides a large amount of gain for the global feedback loop to reduce distortion and output-stage errors.
+
+As frequency increases, the capacitors pass more of the output signal back to U2A's inverting input. Let \\(A_A(s)\\) be U2A's open-loop gain and \\(\beta_c(s)\\) the transfer function from its output to its inverting input. Its gain with local feedback is
+
+\\[
+G_A(s)=\frac{A_A(s)}{1+A_A(s)\beta_c(s)}
+\\]
+
+Ignoring op-amp input loading and assuming a low output impedance, nodal analysis of the RC ladder gives
+
+\\[
+\beta_c(s)=\frac{bs^2}{1+as+bs^2}
+\\]
+
+\\[
+a=R_3C_1+R_4(C_1+C_2) \qquad b=R_3R_4C_1C_2
+\\]
+
+Where \\(\lvert A_A\beta_c\rvert\gg1\\), U2A's gain is approximately the inverse of the feedback-network transfer function:
+
+\\[
+G_A(s)\approx\frac{1}{\beta_c(s)}=\frac{1+as+bs^2}{bs^2}
+\\]
+
+Below the two numerator corner frequencies, this approximation behaves as a double integrator and falls at approximately -40 dB/decade. The numerator introduces two zeros, which progressively flatten this slope to -20 dB/decade and then toward 0 dB/decade. In the frequency range where the capacitors act approximately as short circuits and U2A still has sufficient open-loop gain, U2A approaches a unity-gain buffer, so the composite's frequency response is mainly governed by U2B. 
+
+The zeros provide phase lead relative to the double-integrator region and help restore phase margin before the global loop's unity-gain crossover.
+
+For the values shown
+
+\\[
+R_3=2.2\ \mathrm{k\Omega} \qquad R_4=300\ \Omega
+\\]
+
+\\[
+C_1=330\ \mathrm{pF} \qquad C_2=1.5\ \mathrm{nF}
+\\]
+
+we obtain
+
+\\[
+a=1.275\times10^{-6}\ \mathrm{s} \qquad b=3.267\times10^{-13}\ \mathrm{s^2}
+\\]
+
+Factoring \\(1+as+bs^2=(1+s\tau_1)(1+s\tau_2)\\) gives
+
+\\[
+\tau_{1,2}=\frac{a\pm\sqrt{a^2-4b}}{2}
+\\]
+
+\\[
+f_{z1}=\frac{1}{2\pi\tau_1}\approx173\ \mathrm{kHz} \qquad f_{z2}=\frac{1}{2\pi\tau_2}\approx448\ \mathrm{kHz}
+\\]
+
+These are the poles of the passive feedback network and the zeros of the idealized locally closed-loop gain. Because the two RC sections load each other, their frequencies cannot be calculated independently as \\(1/(2\pi R_3C_1)\\) and \\(1/(2\pi R_4C_2)\\).
 
 ## THX AAA 789
 ![THX AAA 789 Front](images/THX_AAA_789_Front.jpg)
